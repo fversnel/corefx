@@ -38,7 +38,7 @@ namespace System.Collections.Immutable
             /// <param name="map">The collection to display in the debugger</param>
             public DebuggerProxy(ImmutableDictionary<TKey, TValue> map)
             {
-                Requires.NotNull(map, "map");
+                //Requires.NotNull(map, "map");
                 this.map = map;
             }
 

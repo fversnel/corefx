@@ -38,7 +38,7 @@ namespace System.Collections.Immutable
             /// <param name="set">The set.</param>
             internal MutationInput(ImmutableHashSet<T> set)
             {
-                Requires.NotNull(set, "set");
+                //Requires.NotNull(set, "set");
                 this.root = set.root;
                 this.equalityComparer = set.equalityComparer;
                 this.count = set.count;
@@ -52,9 +52,9 @@ namespace System.Collections.Immutable
             /// <param name="count">The count.</param>
             internal MutationInput(ImmutableSortedDictionary<int, HashBucket>.Node root, IEqualityComparer<T> equalityComparer, int count)
             {
-                Requires.NotNull(root, "root");
-                Requires.NotNull(equalityComparer, "equalityComparer");
-                Requires.Range(count >= 0, "count");
+                //Requires.NotNull(root, "root");
+                //Requires.NotNull(equalityComparer, "equalityComparer");
+                //Requires.Range(count >= 0, "count");
                 this.root = root;
                 this.equalityComparer = equalityComparer;
                 this.count = count;

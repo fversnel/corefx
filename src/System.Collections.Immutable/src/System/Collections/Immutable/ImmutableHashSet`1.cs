@@ -63,8 +63,8 @@ namespace System.Collections.Immutable
         /// <param name="count">The number of elements in this collection.</param>
         private ImmutableHashSet(ImmutableSortedDictionary<int, HashBucket>.Node root, IEqualityComparer<T> equalityComparer, int count)
         {
-            Requires.NotNull(root, "root");
-            Requires.NotNull(equalityComparer, "equalityComparer");
+            //Requires.NotNull(root, "root");
+            //Requires.NotNull(equalityComparer, "equalityComparer");
 
             root.Freeze(FreezeBucketAction);
             this.root = root;
@@ -181,7 +181,7 @@ namespace System.Collections.Immutable
         
         public ImmutableHashSet<T> Add(T item)
         {
-            Requires.NotNullAllowStructs(item, "item");
+            //Requires.NotNullAllowStructs(item, "item");
 
             var result = Add(item, this.Origin);
             return result.Finalize(this);
@@ -192,7 +192,7 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableHashSet<T> Remove(T item)
         {
-            Requires.NotNullAllowStructs(item, "item");
+            //Requires.NotNullAllowStructs(item, "item");
 
             var result = Remove(item, this.Origin);
             return result.Finalize(this);
@@ -213,7 +213,7 @@ namespace System.Collections.Immutable
         
         public bool TryGetValue(T equalValue, out T actualValue)
         {
-            Requires.NotNullAllowStructs(equalValue, "value");
+            //Requires.NotNullAllowStructs(equalValue, "value");
 
             int hashCode = this.equalityComparer.GetHashCode(equalValue);
             HashBucket bucket;
@@ -232,7 +232,7 @@ namespace System.Collections.Immutable
         
         public ImmutableHashSet<T> Union(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return this.Union(other, avoidWithComparer: false);
         }
@@ -243,7 +243,7 @@ namespace System.Collections.Immutable
         
         public ImmutableHashSet<T> Intersect(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var result = Intersect(other, this.Origin);
             return result.Finalize(this);
@@ -254,7 +254,7 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableHashSet<T> Except(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var result = Except(other, this.equalityComparer, this.root);
             return result.Finalize(this);
@@ -268,7 +268,7 @@ namespace System.Collections.Immutable
         
         public ImmutableHashSet<T> SymmetricExcept(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var result = SymmetricExcept(other, this.Origin);
             return result.Finalize(this);
@@ -282,7 +282,7 @@ namespace System.Collections.Immutable
         
         public bool SetEquals(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return SetEquals(other, this.Origin);
         }
@@ -295,7 +295,7 @@ namespace System.Collections.Immutable
         
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return IsProperSubsetOf(other, this.Origin);
         }
@@ -308,7 +308,7 @@ namespace System.Collections.Immutable
         
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return IsProperSupersetOf(other, this.Origin);
         }
@@ -321,7 +321,7 @@ namespace System.Collections.Immutable
         
         public bool IsSubsetOf(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return IsSubsetOf(other, this.Origin);
         }
@@ -334,7 +334,7 @@ namespace System.Collections.Immutable
         
         public bool IsSupersetOf(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return IsSupersetOf(other, this.Origin);
         }
@@ -347,7 +347,7 @@ namespace System.Collections.Immutable
         
         public bool Overlaps(IEnumerable<T> other)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             return Overlaps(other, this.Origin);
         }
@@ -417,7 +417,7 @@ namespace System.Collections.Immutable
         /// </summary>
         public bool Contains(T item)
         {
-            Requires.NotNullAllowStructs(item, "item");
+            //Requires.NotNullAllowStructs(item, "item");
             return Contains(item, this.Origin);
         }
 
@@ -510,9 +510,9 @@ namespace System.Collections.Immutable
         /// </summary>
         void ICollection<T>.CopyTo(T[] array, int arrayIndex)
         {
-            Requires.NotNull(array, "array");
-            Requires.Range(arrayIndex >= 0, "arrayIndex");
-            Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
+            //Requires.NotNull(array, "array");
+            //Requires.Range(arrayIndex >= 0, "arrayIndex");
+            //Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
 
             foreach (T item in this)
             {
@@ -555,9 +555,9 @@ namespace System.Collections.Immutable
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
         void ICollection.CopyTo(Array array, int arrayIndex)
         {
-            Requires.NotNull(array, "array");
-            Requires.Range(arrayIndex >= 0, "arrayIndex");
-            Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
+            //Requires.NotNull(array, "array");
+            //Requires.Range(arrayIndex >= 0, "arrayIndex");
+            //Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
 
             if (this.count == 0)
             {
@@ -619,7 +619,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool IsSupersetOf(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             foreach (T item in other)
             {
@@ -637,7 +637,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static MutationResult Add(T item, MutationInput origin)
         {
-            Requires.NotNullAllowStructs(item, "item");
+            //Requires.NotNullAllowStructs(item, "item");
 
             OperationResult result;
             int hashCode = origin.EqualityComparer.GetHashCode(item);
@@ -658,7 +658,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static MutationResult Remove(T item, MutationInput origin)
         {
-            Requires.NotNullAllowStructs(item, "item");
+            //Requires.NotNullAllowStructs(item, "item");
 
             var result = OperationResult.NoChangeRequired;
             int hashCode = origin.EqualityComparer.GetHashCode(item);
@@ -698,7 +698,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static MutationResult Union(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             int count = 0;
             var newRoot = origin.Root;
@@ -723,7 +723,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool Overlaps(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             if (origin.Root.IsEmpty)
             {
@@ -746,7 +746,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool SetEquals(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var otherSet = new HashSet<T>(other, origin.EqualityComparer);
             if (origin.Count != otherSet.Count)
@@ -790,7 +790,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static MutationResult Intersect(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var newSet = ImmutableSortedDictionary<int, HashBucket>.Node.EmptyNode;
             int count = 0;
@@ -812,9 +812,9 @@ namespace System.Collections.Immutable
         /// </summary>
         private static MutationResult Except(IEnumerable<T> other, IEqualityComparer<T> equalityComparer, ImmutableSortedDictionary<int, HashBucket>.Node root)
         {
-            Requires.NotNull(other, "other");
-            Requires.NotNull(equalityComparer, "equalityComparer");
-            Requires.NotNull(root, "root");
+            //Requires.NotNull(other, "other");
+            //Requires.NotNull(equalityComparer, "equalityComparer");
+            //Requires.NotNull(root, "root");
 
             int count = 0;
             var newRoot = root;
@@ -843,7 +843,7 @@ namespace System.Collections.Immutable
         
         private static MutationResult SymmetricExcept(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             var otherAsSet = Empty.Union(other);
 
@@ -877,7 +877,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool IsProperSubsetOf(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             if (origin.Root.IsEmpty)
             {
@@ -925,7 +925,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool IsProperSupersetOf(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             if (origin.Root.IsEmpty)
             {
@@ -950,7 +950,7 @@ namespace System.Collections.Immutable
         /// </summary>
         private static bool IsSubsetOf(IEnumerable<T> other, MutationInput origin)
         {
-            Requires.NotNull(other, "other");
+            //Requires.NotNull(other, "other");
 
             if (origin.Root.IsEmpty)
             {
@@ -989,9 +989,9 @@ namespace System.Collections.Immutable
         /// <returns>The immutable collection.</returns>
         private static ImmutableHashSet<T> Wrap(ImmutableSortedDictionary<int, HashBucket>.Node root, IEqualityComparer<T> equalityComparer, int count)
         {
-            Requires.NotNull(root, "root");
-            Requires.NotNull(equalityComparer, "equalityComparer");
-            Requires.Range(count >= 0, "count");
+            //Requires.NotNull(root, "root");
+            //Requires.NotNull(equalityComparer, "equalityComparer");
+            //Requires.Range(count >= 0, "count");
             return new ImmutableHashSet<T>(root, equalityComparer, count);
         }
 
@@ -1014,7 +1014,7 @@ namespace System.Collections.Immutable
         
         private ImmutableHashSet<T> Union(IEnumerable<T> items, bool avoidWithComparer)
         {
-            Requires.NotNull(items, "items");
+            //Requires.NotNull(items, "items");
 
             // Some optimizations may apply if we're an empty set.
             if (this.IsEmpty && !avoidWithComparer)

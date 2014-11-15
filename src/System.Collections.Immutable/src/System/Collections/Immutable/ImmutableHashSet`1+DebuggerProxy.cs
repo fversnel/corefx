@@ -37,7 +37,7 @@ namespace System.Collections.Immutable
             /// <param name="set">The collection to display in the debugger</param>
             public DebuggerProxy(ImmutableHashSet<T> set)
             {
-                Requires.NotNull(set, "set");
+                //Requires.NotNull(set, "set");
                 this.set = set;
             }
 

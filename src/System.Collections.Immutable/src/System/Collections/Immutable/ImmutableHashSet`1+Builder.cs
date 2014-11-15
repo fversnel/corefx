@@ -71,7 +71,7 @@ namespace System.Collections.Immutable
             /// <param name="set">The set.</param>
             internal Builder(ImmutableHashSet<T> set)
             {
-                Requires.NotNull(set, "set");
+                //Requires.NotNull(set, "set");
                 this.root = set.root;
                 this.count = set.count;
                 this.equalityComparer = set.equalityComparer;
@@ -115,7 +115,7 @@ namespace System.Collections.Immutable
 
                 set
                 {
-                    Requires.NotNull(value, "value");
+                    //Requires.NotNull(value, "value");
 
                     if (value != this.equalityComparer)
                     {
@@ -378,9 +378,9 @@ namespace System.Collections.Immutable
             /// </summary>
             void ICollection<T>.CopyTo(T[] array, int arrayIndex)
             {
-                Requires.NotNull(array, "array");
-                Requires.Range(arrayIndex >= 0, "arrayIndex");
-                Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
+                //Requires.NotNull(array, "array");
+                //Requires.Range(arrayIndex >= 0, "arrayIndex");
+                //Requires.Range(array.Length >= arrayIndex + this.Count, "arrayIndex");
 
                 foreach (T item in this)
                 {

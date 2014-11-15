@@ -56,7 +56,7 @@ namespace System.Collections.Immutable
         /// <param name="tail">The rest of the elements on the stack.</param>
         private ImmutableStack(T head, ImmutableStack<T> tail)
         {
-            Requires.NotNull(tail, "tail");
+            //Requires.NotNull(tail, "tail");
             this.head = head;
             this.tail = tail;
         }
@@ -260,7 +260,7 @@ namespace System.Collections.Immutable
             /// <param name="stack">The stack to enumerator.</param>
             internal Enumerator(ImmutableStack<T> stack)
             {
-                Requires.NotNull(stack, "stack");
+                //Requires.NotNull(stack, "stack");
                 this.originalStack = stack;
                 this.remainingStack = null;
             }
@@ -329,7 +329,7 @@ namespace System.Collections.Immutable
             /// <param name="stack">The stack to enumerator.</param>
             internal EnumeratorObject(ImmutableStack<T> stack)
             {
-                Requires.NotNull(stack, "stack");
+                //Requires.NotNull(stack, "stack");
                 this.originalStack = stack;
             }
 
@@ -433,7 +433,7 @@ namespace System.Collections.Immutable
             /// <param name="stack">The collection to display in the debugger</param>
             public DebuggerProxy(ImmutableStack<T> stack)
             {
-                Requires.NotNull(stack, "stack");
+                //Requires.NotNull(stack, "stack");
                 this.stack = stack;
             }
 

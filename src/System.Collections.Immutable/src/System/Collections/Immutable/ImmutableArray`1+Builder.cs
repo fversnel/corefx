@@ -39,7 +39,7 @@ namespace System.Collections.Immutable
             /// <param name="capacity">The initial capacity of the internal array.</param>
             internal Builder(int capacity)
             {
-                Requires.Range(capacity >= 0, "capacity");
+                //Requires.Range(capacity >= 0, "capacity");
                 this.elements = new RefAsValueType<T>[capacity];
                 this.Count = 0;
             }
@@ -68,7 +68,7 @@ namespace System.Collections.Immutable
 
                 set
                 {
-                    Requires.Range(value >= 0, "value");
+                    //Requires.Range(value >= 0, "value");
                     if (value < this.count)
                     {
                         // truncation mode
@@ -168,7 +168,7 @@ namespace System.Collections.Immutable
             /// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1" />.</param>
             public void Insert(int index, T item)
             {
-                Requires.Range(index >= 0 && index <= this.Count, "index");
+                //Requires.Range(index >= 0 && index <= this.Count, "index");
                 this.EnsureCapacity(this.Count + 1);
 
                 if (index < this.Count)
@@ -196,7 +196,7 @@ namespace System.Collections.Immutable
             /// <param name="items">The items.</param>
             public void AddRange(IEnumerable<T> items)
             {
-                Requires.NotNull(items, "items");
+                //Requires.NotNull(items, "items");
 
                 int count;
                 if (items.TryGetCount(out count))
@@ -216,7 +216,7 @@ namespace System.Collections.Immutable
             /// <param name="items">The items.</param>
             public void AddRange(params T[] items)
             {
-                Requires.NotNull(items, "items");
+                //Requires.NotNull(items, "items");
 
                 var offset = this.Count;
                 this.Count += items.Length;
@@ -234,7 +234,7 @@ namespace System.Collections.Immutable
             /// <param name="items">The items.</param>
             public void AddRange<TDerived>(TDerived[] items) where TDerived : T
             {
-                Requires.NotNull(items, "items");
+                //Requires.NotNull(items, "items");
 
                 var offset = this.Count;
                 this.Count += items.Length;
@@ -253,8 +253,8 @@ namespace System.Collections.Immutable
             /// <param name="length">The number of elements from the source array to add.</param>
             public void AddRange(T[] items, int length)
             {
-                Requires.NotNull(items, "items");
-                Requires.Range(length >= 0, "length");
+                //Requires.NotNull(items, "items");
+                //Requires.Range(length >= 0, "length");
 
                 var offset = this.Count;
                 this.Count += length;
@@ -282,7 +282,7 @@ namespace System.Collections.Immutable
             /// <param name="length">The number of elements from the source array to add.</param>
             public void AddRange(ImmutableArray<T> items, int length)
             {
-                Requires.Range(length >= 0, "length");
+                //Requires.Range(length >= 0, "length");
 
                 if (items.array != null)
                 {
@@ -308,7 +308,7 @@ namespace System.Collections.Immutable
             /// <param name="items">The items.</param>
             public void AddRange(Builder items)
             {
-                Requires.NotNull(items, "items");
+                //Requires.NotNull(items, "items");
                 this.AddRange(items.elements, items.Count);
             }
 
@@ -318,7 +318,7 @@ namespace System.Collections.Immutable
             /// <param name="items">The items.</param>
             public void AddRange<TDerived>(ImmutableArray<TDerived>.Builder items) where TDerived : T
             {
-                Requires.NotNull(items, "items");
+                //Requires.NotNull(items, "items");
                 this.AddRange(items.elements, items.Count);
             }
 
@@ -345,7 +345,7 @@ namespace System.Collections.Immutable
             /// <param name="index">The zero-based index of the item to remove.</param>
             public void RemoveAt(int index)
             {
-                Requires.Range(index >= 0 && index < this.Count, "index");
+                //Requires.Range(index >= 0 && index < this.Count, "index");
 
                 if (index < this.Count - 1)
                 {
@@ -389,8 +389,8 @@ namespace System.Collections.Immutable
             /// <param name="index">The starting index of the target array.</param>
             public void CopyTo(T[] array, int index)
             {
-                Requires.NotNull(array, "array");
-                Requires.Range(index >= 0 && index + this.Count <= array.Length, "start");
+                //Requires.NotNull(array, "array");
+                //Requires.Range(index >= 0 && index + this.Count <= array.Length, "start");
 
                 foreach (var item in this)
                 {
@@ -460,15 +460,15 @@ namespace System.Collections.Immutable
             
             public int IndexOf(T item, int startIndex, int count, IEqualityComparer<T> equalityComparer)
             {
-                Requires.NotNull(equalityComparer, "equalityComparer");
+                //Requires.NotNull(equalityComparer, "equalityComparer");
 
                 if (count == 0 && startIndex == 0)
                 {
                     return -1;
                 }
 
-                Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
-                Requires.Range(count >= 0 && startIndex + count <= this.Count, "count");
+                //Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
+                //Requires.Range(count >= 0 && startIndex + count <= this.Count, "count");
 
                 if (equalityComparer == EqualityComparer<T>.Default)
                 {
@@ -518,7 +518,7 @@ namespace System.Collections.Immutable
                     return -1;
                 }
 
-                Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
+                //Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
 
                 return this.LastIndexOf(item, startIndex, startIndex + 1, EqualityComparer<T>.Default);
             }
@@ -547,15 +547,15 @@ namespace System.Collections.Immutable
             
             public int LastIndexOf(T item, int startIndex, int count, IEqualityComparer<T> equalityComparer)
             {
-                Requires.NotNull(equalityComparer, "equalityComparer");
+                //Requires.NotNull(equalityComparer, "equalityComparer");
 
                 if (count == 0 && startIndex == 0)
                 {
                     return -1;
                 }
 
-                Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
-                Requires.Range(count >= 0 && startIndex - count + 1 >= 0, "count");
+                //Requires.Range(startIndex >= 0 && startIndex < this.Count, "startIndex");
+                //Requires.Range(count >= 0 && startIndex - count + 1 >= 0, "count");
 
                 if (equalityComparer == EqualityComparer<T>.Default)
                 {
@@ -616,8 +616,8 @@ namespace System.Collections.Immutable
             {
                 // Don't rely on Array.Sort's argument validation since our internal array may exceed
                 // the bounds of the publically addressible region.
-                Requires.Range(index >= 0, "index");
-                Requires.Range(count >= 0 && index + count <= this.Count, "count");
+                //Requires.Range(index >= 0, "index");
+                //Requires.Range(count >= 0 && index + count <= this.Count, "count");
 
                 Array.Sort(this.elements, index, count, new Comparer(comparer));
             }
@@ -708,7 +708,7 @@ namespace System.Collections.Immutable
 
                 internal Comparer(IComparer<T> comparer = null)
                 {
-                    Requires.NotNull(comparer, "comparer");
+                    //Requires.NotNull(comparer, "comparer");
                     this.comparer = comparer;
                 }
 

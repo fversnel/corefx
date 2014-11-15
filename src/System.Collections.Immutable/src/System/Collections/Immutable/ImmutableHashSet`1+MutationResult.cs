@@ -56,7 +56,7 @@ namespace System.Collections.Immutable
             /// <param name="countType">The appropriate interpretation for the <paramref name="count"/> parameter.</param>
             internal MutationResult(ImmutableSortedDictionary<int, HashBucket>.Node root, int count, CountType countType = ImmutableHashSet<T>.CountType.Adjustment)
             {
-                Requires.NotNull(root, "root");
+                //Requires.NotNull(root, "root");
                 this.root = root;
                 this.count = count;
                 this.countType = countType;
@@ -95,7 +95,7 @@ namespace System.Collections.Immutable
             /// <returns>The new collection.</returns>
             internal ImmutableHashSet<T> Finalize(ImmutableHashSet<T> priorSet)
             {
-                Requires.NotNull(priorSet, "priorSet");
+                //Requires.NotNull(priorSet, "priorSet");
                 int count = this.Count;
                 if (this.CountType == ImmutableHashSet<T>.CountType.Adjustment)
                 {

@@ -100,18 +100,18 @@ namespace System.Collections.Immutable
         /// </remarks>
         internal static T[] ToArray<T>(this IEnumerable<T> sequence, int count)
         {
-            Requires.NotNull(sequence, "sequence");
-            Requires.Range(count >= 0, "count");
+            //Requires.NotNull(sequence, "sequence");
+            //Requires.Range(count >= 0, "count");
 
             T[] array = new T[count];
             int i = 0;
             foreach (var item in sequence)
             {
-                Requires.Argument(i < count);
+                //Requires.Argument(i < count);
                 array[i++] = item;
             }
 
-            Requires.Argument(i == count);
+            //Requires.Argument(i == count);
             return array;
         }
 
@@ -249,7 +249,7 @@ namespace System.Collections.Immutable
         /// <returns>An ordered collection.  May not be thread-safe.  Never null.</returns>
         internal static IOrderedCollection<T> AsOrderedCollection<T>(this IEnumerable<T> sequence)
         {
-            Requires.NotNull(sequence, "sequence");
+            //Requires.NotNull(sequence, "sequence");
 
             var orderedCollection = sequence as IOrderedCollection<T>;
             if (orderedCollection != null)
@@ -285,7 +285,7 @@ namespace System.Collections.Immutable
             /// <param name="collection">The collection.</param>
             internal ListOfTWrapper(IList<T> collection)
             {
-                Requires.NotNull(collection, "collection");
+                //Requires.NotNull(collection, "collection");
                 this.collection = collection;
             }
 
@@ -350,7 +350,7 @@ namespace System.Collections.Immutable
             /// <param name="sequence">The sequence.</param>
             internal FallbackWrapper(IEnumerable<T> sequence)
             {
-                Requires.NotNull(sequence, "sequence");
+                //Requires.NotNull(sequence, "sequence");
                 this.sequence = sequence;
             }
 

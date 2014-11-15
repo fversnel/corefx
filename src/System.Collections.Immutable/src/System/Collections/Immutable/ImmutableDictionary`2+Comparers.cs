@@ -48,8 +48,8 @@ namespace System.Collections.Immutable
             /// <param name="valueComparer">The value comparer.</param>
             internal Comparers(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
             {
-                Requires.NotNull(keyComparer, "keyComparer");
-                Requires.NotNull(valueComparer, "valueComparer");
+                //Requires.NotNull(keyComparer, "keyComparer");
+                //Requires.NotNull(valueComparer, "valueComparer");
 
                 this.keyComparer = keyComparer;
                 this.valueComparer = valueComparer;
@@ -156,8 +156,8 @@ namespace System.Collections.Immutable
             /// <returns>An instance of <see cref="Comparers"/></returns>
             internal static Comparers Get(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
             {
-                Requires.NotNull(keyComparer, "keyComparer");
-                Requires.NotNull(valueComparer, "valueComparer");
+                //Requires.NotNull(keyComparer, "keyComparer");
+                //Requires.NotNull(valueComparer, "valueComparer");
 
                 return keyComparer == Default.KeyComparer && valueComparer == Default.ValueComparer
                     ? Default
@@ -172,7 +172,7 @@ namespace System.Collections.Immutable
             /// <returns>A new instance of <see cref="Comparers"/></returns>
             internal Comparers WithValueComparer(IEqualityComparer<TValue> valueComparer)
             {
-                Requires.NotNull(valueComparer, "valueComparer");
+                //Requires.NotNull(valueComparer, "valueComparer");
 
                 return this.valueComparer == valueComparer
                     ? this

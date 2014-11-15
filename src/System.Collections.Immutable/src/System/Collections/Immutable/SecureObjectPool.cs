@@ -71,7 +71,7 @@ namespace System.Collections.Immutable
 
         public SecurePooledObject<T> PrepNew(TCaller caller, T newValue)
         {
-            Requires.NotNullAllowStructs(newValue, "newValue");
+            //Requires.NotNullAllowStructs(newValue, "newValue");
             var pooledObject = new SecurePooledObject<T>(newValue);
             pooledObject.Owner = caller.PoolUserId;
             return pooledObject;
@@ -90,7 +90,7 @@ namespace System.Collections.Immutable
 
         internal SecurePooledObject(T newValue)
         {
-            Requires.NotNullAllowStructs(newValue, "newValue");
+            //Requires.NotNullAllowStructs(newValue, "newValue");
             this.value = newValue;
         }
 

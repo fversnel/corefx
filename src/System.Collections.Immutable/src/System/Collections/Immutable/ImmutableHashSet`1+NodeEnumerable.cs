@@ -30,7 +30,7 @@ namespace System.Collections.Immutable
             /// <param name="root">The root.</param>
             internal NodeEnumerable(ImmutableSortedDictionary<int, HashBucket>.Node root)
             {
-                Requires.NotNull(root, "root");
+                //Requires.NotNull(root, "root");
                 this.root = root;
             }
 

@@ -156,9 +156,9 @@ namespace System.Collections.Immutable
         
         public static ImmutableSortedDictionary<TKey, TValue> ToImmutableSortedDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TValue> elementSelector, IComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
-            Requires.NotNull(source, "source");
-            Requires.NotNull(keySelector, "keySelector");
-            Requires.NotNull(elementSelector, "elementSelector");
+            //Requires.NotNull(source, "source");
+            //Requires.NotNull(keySelector, "keySelector");
+            //Requires.NotNull(elementSelector, "elementSelector");
 
             return ImmutableSortedDictionary<TKey, TValue>.Empty.WithComparers(keyComparer, valueComparer)
                 .AddRange(source.Select(element => new KeyValuePair<TKey, TValue>(keySelector(element), elementSelector(element))));
@@ -210,7 +210,7 @@ namespace System.Collections.Immutable
         
         public static ImmutableSortedDictionary<TKey, TValue> ToImmutableSortedDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, IComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
-            Requires.NotNull(source, "source");
+            //Requires.NotNull(source, "source");
 
             var existingDictionary = source as ImmutableSortedDictionary<TKey, TValue>;
             if (existingDictionary != null)

@@ -160,9 +160,9 @@ namespace System.Collections.Immutable
         
         public static ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TSource, TKey, TValue>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TValue> elementSelector, IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
-            Requires.NotNull(source, "source");
-            Requires.NotNull(keySelector, "keySelector");
-            Requires.NotNull(elementSelector, "elementSelector");
+            //Requires.NotNull(source, "source");
+            //Requires.NotNull(keySelector, "keySelector");
+            //Requires.NotNull(elementSelector, "elementSelector");
 
             return ImmutableDictionary<TKey, TValue>.Empty.WithComparers(keyComparer, valueComparer)
                 .AddRange(source.Select(element => new KeyValuePair<TKey, TValue>(keySelector(element), elementSelector(element))));
@@ -243,7 +243,7 @@ namespace System.Collections.Immutable
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static ImmutableDictionary<TKey, TValue> ToImmutableDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
-            Requires.NotNull(source, "source");
+            //Requires.NotNull(source, "source");
 
             var existingDictionary = source as ImmutableDictionary<TKey, TValue>;
             if (existingDictionary != null)
@@ -297,8 +297,8 @@ namespace System.Collections.Immutable
         
         public static bool Contains<TKey, TValue>(this IImmutableDictionary<TKey, TValue> map, TKey key, TValue value)
         {
-            Requires.NotNull(map, "map");
-            Requires.NotNullAllowStructs(key, "key");
+            //Requires.NotNull(map, "map");
+            //Requires.NotNullAllowStructs(key, "key");
             return map.Contains(new KeyValuePair<TKey, TValue>(key, value));
         }
 
@@ -328,8 +328,8 @@ namespace System.Collections.Immutable
         
         public static TValue GetValueOrDefault<TKey, TValue>(this IImmutableDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
         {
-            Requires.NotNull(dictionary, "dictionary");
-            Requires.NotNullAllowStructs(key, "key");
+            //Requires.NotNull(dictionary, "dictionary");
+            //Requires.NotNullAllowStructs(key, "key");
 
             TValue value;
             if (dictionary.TryGetValue(key, out value))

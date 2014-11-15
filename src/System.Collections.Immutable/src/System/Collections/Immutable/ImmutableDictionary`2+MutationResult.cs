@@ -47,7 +47,7 @@ namespace System.Collections.Immutable
             /// <param name="countAdjustment">The count adjustment.</param>
             internal MutationResult(ImmutableSortedDictionary<int, HashBucket>.Node root, int countAdjustment)
             {
-                Requires.NotNull(root, "root");
+                //Requires.NotNull(root, "root");
                 this.root = root;
                 this.countAdjustment = countAdjustment;
             }
@@ -75,7 +75,7 @@ namespace System.Collections.Immutable
             /// <returns>The new collection.</returns>
             internal ImmutableDictionary<TKey, TValue> Finalize(ImmutableDictionary<TKey, TValue> priorMap)
             {
-                Requires.NotNull(priorMap, "priorMap");
+                //Requires.NotNull(priorMap, "priorMap");
                 return priorMap.Wrap(this.Root, priorMap.count + this.CountAdjustment);
             }
         }

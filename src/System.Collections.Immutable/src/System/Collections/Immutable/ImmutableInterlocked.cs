@@ -70,10 +70,10 @@ namespace System.Collections.Immutable
         /// <returns>The value obtained from the dictionary or <paramref name="valueFactory"/> if it was not present.</returns>
         public static TValue GetOrAdd<TKey, TValue, TArg>(ref ImmutableDictionary<TKey, TValue> location, TKey key, Func<TKey, TArg, TValue> valueFactory, TArg factoryArgument)
         {
-            Requires.NotNull(valueFactory, "valueFactory");
+            //Requires.NotNull(valueFactory, "valueFactory");
 
             var map = Volatile.Read(ref location);
-            Requires.NotNull(map, "location");
+            //Requires.NotNull(map, "location");
 
             TValue value;
             if (map.TryGetValue(key, out value))
@@ -99,10 +99,10 @@ namespace System.Collections.Immutable
         /// <returns>The value obtained from the dictionary or <paramref name="valueFactory"/> if it was not present.</returns>
         public static TValue GetOrAdd<TKey, TValue>(ref ImmutableDictionary<TKey, TValue> location, TKey key, Func<TKey, TValue> valueFactory)
         {
-            Requires.NotNull(valueFactory, "valueFactory");
+            //Requires.NotNull(valueFactory, "valueFactory");
 
             var map = Volatile.Read(ref location);
-            Requires.NotNull(map, "location");
+            //Requires.NotNull(map, "location");
 
             TValue value;
             if (map.TryGetValue(key, out value))
@@ -129,7 +129,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
                 TValue oldValue;
                 if (priorCollection.TryGetValue(key, out oldValue))
                 {
@@ -160,15 +160,15 @@ namespace System.Collections.Immutable
         /// <returns>The added or updated value.</returns>
         public static TValue AddOrUpdate<TKey, TValue>(ref ImmutableDictionary<TKey, TValue> location, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
         {
-            Requires.NotNull(addValueFactory, "addValueFactory");
-            Requires.NotNull(updateValueFactory, "updateValueFactory");
+            //Requires.NotNull(addValueFactory, "addValueFactory");
+            //Requires.NotNull(updateValueFactory, "updateValueFactory");
 
             TValue newValue;
             var priorCollection = Volatile.Read(ref location);
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 TValue oldValue;
                 if (priorCollection.TryGetValue(key, out oldValue))
@@ -204,14 +204,14 @@ namespace System.Collections.Immutable
         /// <returns>The added or updated value.</returns>
         public static TValue AddOrUpdate<TKey, TValue>(ref ImmutableDictionary<TKey, TValue> location, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
         {
-            Requires.NotNull(updateValueFactory, "updateValueFactory");
+            //Requires.NotNull(updateValueFactory, "updateValueFactory");
 
             TValue newValue;
             var priorCollection = Volatile.Read(ref location);
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 TValue oldValue;
                 if (priorCollection.TryGetValue(key, out oldValue))
@@ -250,7 +250,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 if (priorCollection.ContainsKey(key))
                 {
@@ -283,7 +283,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 TValue priorValue;
                 if (!priorCollection.TryGetValue(key, out priorValue) || !valueComparer.Equals(priorValue, comparisonValue))
@@ -316,7 +316,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 if (!priorCollection.TryGetValue(key, out value))
                 {
@@ -349,7 +349,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 if (priorCollection.IsEmpty)
                 {
@@ -378,7 +378,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 var updatedCollection = priorCollection.Push(value);
                 var interlockedResult = Interlocked.CompareExchange(ref location, updatedCollection, priorCollection);
@@ -404,7 +404,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 if (priorCollection.IsEmpty)
                 {
@@ -433,7 +433,7 @@ namespace System.Collections.Immutable
             bool successful;
             do
             {
-                Requires.NotNull(priorCollection, "location");
+                //Requires.NotNull(priorCollection, "location");
 
                 var updatedCollection = priorCollection.Enqueue(value);
                 var interlockedResult = Interlocked.CompareExchange(ref location, updatedCollection, priorCollection);
