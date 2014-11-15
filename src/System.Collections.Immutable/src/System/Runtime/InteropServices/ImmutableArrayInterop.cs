@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Immutable;
-
+/*
 namespace System.Runtime.InteropServices
 {
     /// <summary>
@@ -57,3 +57,4 @@ namespace System.Runtime.InteropServices
         }
     }
 }
+*/

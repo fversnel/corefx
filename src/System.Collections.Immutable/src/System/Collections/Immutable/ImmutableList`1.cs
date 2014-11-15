@@ -8,8 +8,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
+using System.Text;
 using Validation;
 
 namespace System.Collections.Immutable
@@ -58,8 +59,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableList<T> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().IsEmpty);
             return Empty;
         }
 
@@ -153,7 +152,6 @@ namespace System.Collections.Immutable
         {
             get
             {
-                Contract.Ensures(Contract.Result<bool>() == (this.Count == 0));
                 return this.root.IsEmpty;
             }
         }
@@ -173,8 +171,6 @@ namespace System.Collections.Immutable
         {
             get
             {
-                Contract.Ensures(Contract.Result<int>() >= 0);
-                Contract.Ensures((Contract.Result<int>() == 0) == this.IsEmpty);
                 return this.root.Count;
             }
         }
@@ -250,7 +246,7 @@ namespace System.Collections.Immutable
         /// This is an O(1) operation and results in only a single (small) memory allocation.
         /// The mutable collection that is returned is *not* thread-safe.
         /// </remarks>
-        [Pure]
+        
         public Builder ToBuilder()
         {
             // We must not cache the instance created here and return it to various callers.
@@ -262,11 +258,9 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Add(T value)
         {
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count == this.Count + 1);
             var result = this.root.Add(value);
             return this.Wrap(result);
         }
@@ -274,12 +268,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> AddRange(IEnumerable<T> items)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count >= this.Count);
 
             // Some optimizations may apply if we're an empty list.
             if (this.IsEmpty)
@@ -301,24 +293,21 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Insert(int index, T item)
         {
             Requires.Range(index >= 0 && index <= this.Count, "index");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count == this.Count + 1);
             return this.Wrap(this.root.Insert(index, item));
         }
 
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> InsertRange(int index, IEnumerable<T> items)
         {
             Requires.Range(index >= 0 && index <= this.Count, "index");
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
 
             // Let's not implement in terms of ImmutableList.Add so that we're
             // not unnecessarily generating a new list object for each item.
@@ -334,7 +323,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Remove(T value)
         {
             return this.Remove(value, EqualityComparer<T>.Default);
@@ -343,10 +332,9 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Remove(T value, IEqualityComparer<T> equalityComparer)
         {
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
             int index = this.IndexOf(value, equalityComparer);
             return index < 0 ? this : this.RemoveAt(index);
         }
@@ -357,12 +345,11 @@ namespace System.Collections.Immutable
         /// <param name="index">The starting index to begin removal.</param>
         /// <param name="count">The number of elements to remove.</param>
         /// <returns>A new list with the elements removed.</returns>
-        [Pure]
+        
         public ImmutableList<T> RemoveRange(int index, int count)
         {
             Requires.Range(index >= 0 && (index < this.Count || (index == this.Count && count == 0)), "index");
             Requires.Range(count >= 0 && index + count <= this.Count, "count");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
 
             var result = this.root;
             int remaining = count;
@@ -381,7 +368,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableList<T> RemoveRange(IEnumerable<T> items)
         {
             return this.RemoveRange(items, EqualityComparer<T>.Default);
@@ -397,13 +384,11 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableList<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer)
         {
             Requires.NotNull(items, "items");
             Requires.NotNull(equalityComparer, "equalityComparer");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count <= this.Count);
 
             // Some optimizations may apply if we're an empty list.
             if (this.IsEmpty)
@@ -429,12 +414,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> RemoveAt(int index)
         {
             Requires.Range(index >= 0 && index < this.Count, "index");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count == this.Count - 1);
             var result = this.root.RemoveAt(index);
             return this.Wrap(result);
         }
@@ -450,11 +433,10 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The new list.
         /// </returns>
-        [Pure]
+        
         public ImmutableList<T> RemoveAll(Predicate<T> match)
         {
             Requires.NotNull(match, "match");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
 
             return this.Wrap(this.root.RemoveAll(match));
         }
@@ -462,7 +444,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> SetItem(int index, T value)
         {
             return this.Wrap(this.root.ReplaceAt(index, value));
@@ -471,7 +453,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Replace(T oldValue, T newValue)
         {
             return this.Replace(oldValue, newValue, EqualityComparer<T>.Default);
@@ -480,12 +462,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableList&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Replace(T oldValue, T newValue, IEqualityComparer<T> equalityComparer)
         {
             Requires.NotNull(equalityComparer, "equalityComparer");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableList<T>>().Count == this.Count);
 
             int index = this.IndexOf(oldValue, equalityComparer);
             if (index < 0)
@@ -500,10 +480,9 @@ namespace System.Collections.Immutable
         /// Reverses the order of the elements in the entire ImmutableList&lt;T&gt;.
         /// </summary>
         /// <returns>The reversed list.</returns>
-        [Pure]
+        
         public ImmutableList<T> Reverse()
         {
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
             return this.Wrap(this.root.Reverse());
         }
 
@@ -513,7 +492,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The zero-based starting index of the range to reverse.</param>
         /// <param name="count">The number of elements in the range to reverse.</param> 
         /// <returns>The reversed list.</returns>
-        [Pure]
+        
         public ImmutableList<T> Reverse(int index, int count)
         {
             return this.Wrap(this.root.Reverse(index, count));
@@ -523,10 +502,9 @@ namespace System.Collections.Immutable
         /// Sorts the elements in the entire ImmutableList&lt;T&gt; using
         /// the default comparer.
         /// </summary>
-        [Pure]
+        
         public ImmutableList<T> Sort()
         {
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
             return this.Wrap(this.root.Sort());
         }
 
@@ -538,11 +516,10 @@ namespace System.Collections.Immutable
         /// The System.Comparison&lt;T&gt; to use when comparing elements.
         /// </param>
         /// <returns>The sorted list.</returns>
-        [Pure]
+        
         public ImmutableList<T> Sort(Comparison<T> comparison)
         {
             Requires.NotNull(comparison, "comparison");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
             return this.Wrap(this.root.Sort(comparison));
         }
 
@@ -555,11 +532,10 @@ namespace System.Collections.Immutable
         /// elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.
         /// </param>
         /// <returns>The sorted list.</returns>
-        [Pure]
+        
         public ImmutableList<T> Sort(IComparer<T> comparer)
         {
             Requires.NotNull(comparer, "comparer");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
             return this.Wrap(this.root.Sort(comparer));
         }
 
@@ -578,14 +554,13 @@ namespace System.Collections.Immutable
         /// elements, or null to use the default comparer System.Collections.Generic.Comparer&lt;T&gt;.Default.
         /// </param>
         /// <returns>The sorted list.</returns>
-        [Pure]
+        
         public ImmutableList<T> Sort(int index, int count, IComparer<T> comparer)
         {
             Requires.Range(index >= 0, "index");
             Requires.Range(count >= 0, "count");
             Requires.Range(index + count <= this.Count, "count");
             Requires.NotNull(comparer, "comparer");
-            Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
 
             return this.Wrap(this.root.Sort(index, count, comparer));
         }
@@ -933,7 +908,7 @@ namespace System.Collections.Immutable
         /// elements in the ImmutableList&lt;T&gt; that starts at index and
         /// contains count number of elements, if found; otherwise, –1.
         /// </returns>
-        [Pure]
+        
         public int IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer)
         {
             return this.root.IndexOf(item, index, count, equalityComparer);
@@ -959,7 +934,7 @@ namespace System.Collections.Immutable
         /// in the ImmutableList&lt;T&gt; that contains count number of elements
         /// and ends at index, if found; otherwise, –1.
         /// </returns>
-        [Pure]
+        
         public int LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer)
         {
             return this.root.LastIndexOf(item, index, count, equalityComparer);
@@ -993,7 +968,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public bool Contains(T value)
         {
-            Contract.Ensures(!this.IsEmpty || !Contract.Result<bool>());
             return this.IndexOf(value) >= 0;
         }
 
@@ -1386,12 +1360,16 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="root">The root of the collection.</param>
         /// <returns>The immutable sorted set instance.</returns>
-        [Pure]
+        
         private static ImmutableList<T> WrapNode(Node root)
         {
             return root.IsEmpty
                 ? ImmutableList<T>.Empty
                 : new ImmutableList<T>(root);
+        }
+
+        public override string ToString() {
+            return "List(" + this.Join(", ") + ")";
         }
 
         /// <summary>
@@ -1424,7 +1402,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="root">The root node to wrap.</param>
         /// <returns>A wrapping collection type for the new tree.</returns>
-        [Pure]
+        
         private ImmutableList<T> Wrap(Node root)
         {
             if (root != this.root)
@@ -1442,7 +1420,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="items">The sequence of elements from which to create the list.</param>
         /// <returns>The immutable list.</returns>
-        [Pure]
+        
         private ImmutableList<T> FillFromEmpty(IEnumerable<T> items)
         {
             Debug.Assert(this.IsEmpty);
@@ -1723,9 +1701,6 @@ namespace System.Collections.Immutable
             /// </summary>
             private void ThrowIfDisposed()
             {
-                Contract.Ensures(this.root != null);
-                Contract.EnsuresOnThrow<ObjectDisposedException>(this.root == null);
-
                 if (this.root == null)
                 {
                     throw new ObjectDisposedException(this.GetType().FullName);
@@ -1832,7 +1807,6 @@ namespace System.Collections.Immutable
             /// </summary>
             private Node()
             {
-                Contract.Ensures(this.IsEmpty);
                 this.frozen = true; // the empty node is *always* frozen.
             }
 
@@ -1849,7 +1823,6 @@ namespace System.Collections.Immutable
                 Requires.NotNull(left, "left");
                 Requires.NotNull(right, "right");
                 Debug.Assert(!frozen || (left.frozen && right.frozen));
-                Contract.Ensures(!this.IsEmpty);
 
                 this.key = key;
                 this.left = left;
@@ -1869,7 +1842,6 @@ namespace System.Collections.Immutable
             {
                 get
                 {
-                    Contract.Ensures(Contract.Result<bool>() == (this.left == null));
                     return this.left == null;
                 }
             }
@@ -1913,7 +1885,6 @@ namespace System.Collections.Immutable
             {
                 get
                 {
-                    Contract.Ensures(Contract.Result<int>() == this.count);
                     return this.count;
                 }
             }
@@ -2009,7 +1980,7 @@ namespace System.Collections.Immutable
             /// <param name="start">The starting index within <paramref name="items"/> that should be captured by the node tree.</param>
             /// <param name="length">The number of elements from <paramref name="items"/> that should be captured by the node tree.</param>
             /// <returns>The root of the created node tree.</returns>
-            [Pure]
+            
             internal static Node NodeTreeFromList(IOrderedCollection<T> items, int start, int length)
             {
                 Requires.NotNull(items, "items");
@@ -2139,7 +2110,6 @@ namespace System.Collections.Immutable
             internal Node RemoveAll(Predicate<T> match)
             {
                 Requires.NotNull(match, "match");
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 var result = this;
                 int index = 0;
@@ -2194,7 +2164,6 @@ namespace System.Collections.Immutable
             /// <returns>The reversed list.</returns>
             internal Node Reverse()
             {
-                Contract.Ensures(Contract.Result<Node>() != null);
                 return this.Reverse(0, this.Count);
             }
 
@@ -2233,7 +2202,6 @@ namespace System.Collections.Immutable
             /// </summary>
             internal Node Sort()
             {
-                Contract.Ensures(Contract.Result<Node>() != null);
                 return this.Sort(Comparer<T>.Default);
             }
 
@@ -2248,7 +2216,6 @@ namespace System.Collections.Immutable
             internal Node Sort(Comparison<T> comparison)
             {
                 Requires.NotNull(comparison, "comparison");
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 // PERF: Eventually this might be reimplemented in a way that does not require allocating an array.
                 var array = new T[this.Count];
@@ -2269,7 +2236,6 @@ namespace System.Collections.Immutable
             internal Node Sort(IComparer<T> comparer)
             {
                 Requires.NotNull(comparer, "comparer");
-                Contract.Ensures(Contract.Result<Node>() != null);
                 return this.Sort(0, this.Count, comparer);
             }
 
@@ -2400,7 +2366,7 @@ namespace System.Collections.Immutable
             /// elements in the ImmutableList&lt;T&gt; that starts at index and
             /// contains count number of elements, if found; otherwise, –1.
             /// </returns>
-            [Pure]
+            
             internal int IndexOf(T item, IEqualityComparer<T> equalityComparer)
             {
                 return this.IndexOf(item, 0, this.Count, equalityComparer);
@@ -2428,7 +2394,7 @@ namespace System.Collections.Immutable
             /// elements in the ImmutableList&lt;T&gt; that starts at index and
             /// contains count number of elements, if found; otherwise, –1.
             /// </returns>
-            [Pure]
+            
             internal int IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer)
             {
                 Requires.Range(index >= 0, "index");
@@ -2471,7 +2437,7 @@ namespace System.Collections.Immutable
             /// in the ImmutableList&lt;T&gt; that contains count number of elements
             /// and ends at index, if found; otherwise, –1.
             /// </returns>
-            [Pure]
+            
             internal int LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer)
             {
                 Requires.NotNull(equalityComparer, "ValueComparer");
@@ -2721,7 +2687,6 @@ namespace System.Collections.Immutable
             internal ImmutableList<T> FindAll(Predicate<T> match)
             {
                 Requires.NotNull(match, "match");
-                Contract.Ensures(Contract.Result<ImmutableList<T>>() != null);
 
                 var builder = ImmutableList<T>.Empty.ToBuilder();
                 foreach (var item in this)
@@ -2751,7 +2716,6 @@ namespace System.Collections.Immutable
             internal int FindIndex(Predicate<T> match)
             {
                 Requires.NotNull(match, "match");
-                Contract.Ensures(Contract.Result<int>() >= -1);
 
                 return this.FindIndex(0, this.count, match);
             }
@@ -2860,7 +2824,6 @@ namespace System.Collections.Immutable
             internal int FindLastIndex(Predicate<T> match)
             {
                 Requires.NotNull(match, "match");
-                Contract.Ensures(Contract.Result<int>() >= -1);
 
                 if (this.IsEmpty)
                 {
@@ -2962,7 +2925,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -2982,7 +2944,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -3002,7 +2963,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -3022,7 +2982,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -3038,7 +2997,7 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>0 if the tree is in balance, a positive integer if the right side is heavy, or a negative integer if the left side is heavy.</returns>
-            [Pure]
+            
             private static int Balance(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -3054,7 +3013,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// <c>true</c> if [is right heavy] [the specified tree]; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             private static bool IsRightHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -3065,7 +3024,7 @@ namespace System.Collections.Immutable
             /// <summary>
             /// Determines whether the specified tree is left heavy.
             /// </summary>
-            [Pure]
+            
             private static bool IsLeftHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -3078,12 +3037,11 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>A balanced tree.</returns>
-            [Pure]
+            
             private static Node MakeBalanced(Node tree)
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (IsRightHeavy(tree))
                 {

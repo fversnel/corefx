@@ -11,7 +11,7 @@ namespace System.Collections.Immutable
     /// Describes an ordered collection of elements.
     /// </summary>
     /// <typeparam name="T">The type of element in the collection.</typeparam>
-    internal interface IOrderedCollection<out T> : IEnumerable<T>
+    internal interface IOrderedCollection<T> : IEnumerable<T>
     {
         /// <summary>
         /// Gets the number of elements in the collection.

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -295,7 +295,7 @@ namespace System.Collections.Immutable
         /// This is an O(1) operation and results in only a single (small) memory allocation.
         /// The mutable collection that is returned is *not* thread-safe.
         /// </remarks>
-        [Pure]
+        
         public Builder ToBuilder()
         {
             // We must not cache the instance created here and return it to various callers.
@@ -307,11 +307,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> Add(TKey key, TValue value)
         {
             Requires.NotNullAllowStructs(key, "key");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             var result = Add(key, value, KeyCollisionBehavior.ThrowIfValueDifferent, new MutationInput(this));
             return result.Finalize(this);
@@ -320,12 +319,11 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public ImmutableDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
             Requires.NotNull(pairs, "pairs");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             return this.AddRange(pairs, false);
         }
@@ -333,12 +331,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> SetItem(TKey key, TValue value)
         {
             Requires.NotNullAllowStructs(key, "key");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
-            Contract.Ensures(!Contract.Result<ImmutableDictionary<TKey, TValue>>().IsEmpty);
 
             var result = Add(key, value, KeyCollisionBehavior.SetValue, new MutationInput(this));
             return result.Finalize(this);
@@ -349,12 +345,11 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="items">The key=value pairs to set on the map.  Any keys that conflict with existing keys will overwrite the previous values.</param>
         /// <returns>An immutable dictionary.</returns>
-        [Pure]
+        
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public ImmutableDictionary<TKey, TValue> SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             var result = AddRange(items, this.Origin, KeyCollisionBehavior.SetValue);
             return result.Finalize(this);
@@ -363,11 +358,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> Remove(TKey key)
         {
             Requires.NotNullAllowStructs(key, "key");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             var result = Remove(key, new MutationInput(this));
             return result.Finalize(this);
@@ -376,11 +370,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> RemoveRange(IEnumerable<TKey> keys)
         {
             Requires.NotNull(keys, "keys");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             int count = this.count;
             var root = this.root;
@@ -449,7 +442,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> WithComparers(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
             if (keyComparer == null)
@@ -489,7 +482,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableDictionary<TKey, TValue> WithComparers(IEqualityComparer<TKey> keyComparer)
         {
             return this.WithComparers(keyComparer, this.comparers.ValueComparer);
@@ -507,7 +500,7 @@ namespace System.Collections.Immutable
         /// true if the ImmutableSortedMap&lt;TKey,TValue&gt; contains
         /// an element with the specified value; otherwise, false.
         /// </returns>
-        [Pure]
+        
         public bool ContainsValue(TValue value)
         {
             return this.Values.Contains(value, this.ValueComparer);
@@ -522,6 +515,12 @@ namespace System.Collections.Immutable
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this.root);
+        }
+
+        public override string ToString()
+        {
+            var elems = this.Select(pair => pair.Key + ": " + pair.Value);
+            return "Dict(" + elems.Join(", ") + ")";
         }
 
         #endregion
@@ -859,7 +858,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="comparers">The comparers.</param>
         /// <returns>The empty dictionary.</returns>
-        [Pure]
+        
         private static ImmutableDictionary<TKey, TValue> EmptyWithComparers(Comparers comparers)
         {
             Requires.NotNull(comparers, "comparers");
@@ -1085,11 +1084,10 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="pairs">The entries to add.</param>
         /// <param name="avoidToHashMap"><c>true</c> when being called from ToHashMap to avoid StackOverflow.</param>
-        [Pure]
+        
         private ImmutableDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs, bool avoidToHashMap)
         {
             Requires.NotNull(pairs, "pairs");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             // Some optimizations may apply if we're an empty list.
             if (this.IsEmpty && !avoidToHashMap)

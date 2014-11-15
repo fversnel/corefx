@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Validation;
 
@@ -68,9 +68,6 @@ namespace System.Collections.Immutable
         {
             get
             {
-                Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
-                Contract.Ensures(Contract.Result<ImmutableStack<T>>().IsEmpty);
-                Contract.Assume(EmptyField.IsEmpty);
                 return EmptyField;
             }
         }
@@ -80,9 +77,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableStack<T> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>().IsEmpty);
-            Contract.Assume(EmptyField.IsEmpty);
             return Empty;
         }
 
@@ -112,7 +106,7 @@ namespace System.Collections.Immutable
         /// The element on the top of the stack. 
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         public T Peek()
         {
             if (this.IsEmpty)
@@ -128,11 +122,9 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="value">The element to push onto the stack.</param>
         /// <returns>The new stack.</returns>
-        [Pure]
+        
         public ImmutableStack<T> Push(T value)
         {
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
-            Contract.Ensures(!Contract.Result<ImmutableStack<T>>().IsEmpty);
             return new ImmutableStack<T>(value, this);
         }
 
@@ -141,7 +133,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="value">The element to push onto the stack.</param>
         /// <returns>The new stack.</returns>
-        [Pure]
+        
         IImmutableStack<T> IImmutableStack<T>.Push(T value)
         {
             return this.Push(value);
@@ -152,10 +144,9 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>A stack; never <c>null</c></returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         public ImmutableStack<T> Pop()
         {
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
             if (this.IsEmpty)
             {
                 throw new InvalidOperationException(Strings.InvalidEmptyOperation);
@@ -172,7 +163,7 @@ namespace System.Collections.Immutable
         /// A stack; never <c>null</c>
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#")]
-        [Pure]
+        
         public ImmutableStack<T> Pop(out T value)
         {
             value = this.Peek();
@@ -184,7 +175,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>A stack; never <c>null</c></returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         IImmutableStack<T> IImmutableStack<T>.Pop()
         {
             return this.Pop();
@@ -196,7 +187,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// An <see cref="T:Enumerator"/> that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
@@ -208,7 +199,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return new EnumeratorObject(this);
@@ -220,22 +211,24 @@ namespace System.Collections.Immutable
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return new EnumeratorObject(this);
+        }
+
+        public override string ToString()
+        {
+            return "Stack(" + this.Join(", ") + ")";
         }
 
         /// <summary>
         /// Reverses the order of a stack.
         /// </summary>
         /// <returns>The reversed stack.</returns>
-        [Pure]
+        
         internal ImmutableStack<T> Reverse()
         {
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableStack<T>>().IsEmpty == this.IsEmpty);
-
             var r = this.Clear();
             for (ImmutableStack<T> f = this; !f.IsEmpty; f = f.Pop())
             {

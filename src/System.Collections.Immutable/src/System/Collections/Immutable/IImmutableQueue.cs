@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 
 namespace System.Collections.Immutable
 {
@@ -22,13 +21,13 @@ namespace System.Collections.Immutable
         /// <value>
         ///   <c>true</c> if this queue is empty; otherwise, <c>false</c>.
         /// </value>
-        [Pure]
+        
         bool IsEmpty { get; }
 
         /// <summary>
         /// Gets an empty queue.
         /// </summary>
-        [Pure]
+        
         IImmutableQueue<T> Clear();
 
         /// <summary>
@@ -38,7 +37,7 @@ namespace System.Collections.Immutable
         /// The element on the top of the stack. 
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         T Peek();
 
         /// <summary>
@@ -48,7 +47,6 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The new queue.
         /// </returns>
-        [Pure]
         IImmutableQueue<T> Enqueue(T value);
 
         /// <summary>
@@ -56,7 +54,6 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
         IImmutableQueue<T> Dequeue();
     }
 }

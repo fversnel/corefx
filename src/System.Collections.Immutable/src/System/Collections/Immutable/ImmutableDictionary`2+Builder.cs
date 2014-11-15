@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Text;
 using Validation;
@@ -473,7 +473,7 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="key">The key to search for.</param>
             /// <returns>The value for the key, or <c>default(TValue)</c> if no matching key was found.</returns>
-            [Pure]
+            
             public TValue GetValueOrDefault(TKey key)
             {
                 return this.GetValueOrDefault(key, default(TValue));
@@ -487,7 +487,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// The value for the key, or <paramref name="defaultValue"/> if no matching key was found.
             /// </returns>
-            [Pure]
+            
             public TValue GetValueOrDefault(TKey key, TValue defaultValue)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -565,7 +565,7 @@ namespace System.Collections.Immutable
             /// true if the ImmutableSortedMap&lt;TKey,TValue&gt; contains
             /// an element with the specified value; otherwise, false.
             /// </returns>
-            [Pure]
+            
             public bool ContainsValue(TValue value)
             {
                 return this.Values.Contains(value, this.ValueComparer);

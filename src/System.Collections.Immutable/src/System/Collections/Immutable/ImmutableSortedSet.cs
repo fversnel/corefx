@@ -3,10 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Collections.Immutable
 {
@@ -20,7 +18,6 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <returns>The immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>()
         {
             return ImmutableSortedSet<T>.Empty;
@@ -34,7 +31,6 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The immutable collection.
         /// </returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>(IComparer<T> comparer)
         {
             return ImmutableSortedSet<T>.Empty.WithComparer(comparer);
@@ -46,7 +42,6 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="item">The item to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>(T item)
         {
             return ImmutableSortedSet<T>.Empty.Add(item);
@@ -59,7 +54,6 @@ namespace System.Collections.Immutable
         /// <param name="comparer">The comparer.</param>
         /// <param name="item">The item to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>(IComparer<T> comparer, T item)
         {
             return ImmutableSortedSet<T>.Empty.WithComparer(comparer).Add(item);
@@ -71,7 +65,6 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> CreateRange<T>(IEnumerable<T> items)
         {
             return ImmutableSortedSet<T>.Empty.Union(items);
@@ -84,7 +77,6 @@ namespace System.Collections.Immutable
         /// <param name="comparer">The comparer.</param>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> CreateRange<T>(IComparer<T> comparer, IEnumerable<T> items)
         {
             return ImmutableSortedSet<T>.Empty.WithComparer(comparer).Union(items);
@@ -96,7 +88,6 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>(params T[] items)
         {
             return ImmutableSortedSet<T>.Empty.Union(items);
@@ -109,7 +100,6 @@ namespace System.Collections.Immutable
         /// <param name="comparer">The comparer.</param>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T> Create<T>(IComparer<T> comparer, params T[] items)
         {
             return ImmutableSortedSet<T>.Empty.WithComparer(comparer).Union(items);
@@ -120,7 +110,6 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <returns>The immutable collection.</returns>
-        [Pure]
         public static ImmutableSortedSet<T>.Builder CreateBuilder<T>()
         {
             return Create<T>().ToBuilder();
@@ -134,7 +123,6 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The immutable collection.
         /// </returns>
-        [Pure]
         public static ImmutableSortedSet<T>.Builder CreateBuilder<T>(IComparer<T> comparer)
         {
             return Create<T>(comparer).ToBuilder();
@@ -147,7 +135,6 @@ namespace System.Collections.Immutable
         /// <param name="source">The sequence to enumerate.</param>
         /// <param name="comparer">The comparer to use for initializing and adding members to the sorted set.</param>
         /// <returns>An immutable set.</returns>
-        [Pure]
         public static ImmutableSortedSet<TSource> ToImmutableSortedSet<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
         {
             var existingSet = source as ImmutableSortedSet<TSource>;
@@ -165,7 +152,6 @@ namespace System.Collections.Immutable
         /// <typeparam name="TSource">The type of element in the sequence.</typeparam>
         /// <param name="source">The sequence to enumerate.</param>
         /// <returns>An immutable set.</returns>
-        [Pure]
         public static ImmutableSortedSet<TSource> ToImmutableSortedSet<TSource>(this IEnumerable<TSource> source)
         {
             return ToImmutableSortedSet(source, null);

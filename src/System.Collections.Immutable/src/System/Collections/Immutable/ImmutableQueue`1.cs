@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Text;
 using Validation;
@@ -68,8 +68,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableQueue<T> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableQueue<T>>().IsEmpty);
-            Contract.Assume(EmptyField.IsEmpty);
             return Empty;
         }
 
@@ -91,8 +89,6 @@ namespace System.Collections.Immutable
         {
             get
             {
-                Contract.Ensures(Contract.Result<ImmutableQueue<T>>().IsEmpty);
-                Contract.Assume(EmptyField.IsEmpty);
                 return EmptyField;
             }
         }
@@ -102,7 +98,6 @@ namespace System.Collections.Immutable
         /// </summary>
         IImmutableQueue<T> IImmutableQueue<T>.Clear()
         {
-            Contract.Assume(EmptyField.IsEmpty);
             return this.Clear();
         }
 
@@ -113,8 +108,6 @@ namespace System.Collections.Immutable
         {
             get
             {
-                Contract.Ensures(Contract.Result<ImmutableStack<T>>() != null);
-
                 // Although this is a lazy-init pattern, no lock is required because
                 // this instance is immutable otherwise, and a double-assignment from multiple
                 // threads is harmless.
@@ -131,7 +124,7 @@ namespace System.Collections.Immutable
         /// Gets the element at the front of the queue.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         public T Peek()
         {
             if (this.IsEmpty)
@@ -149,11 +142,9 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The new queue.
         /// </returns>
-        [Pure]
+        
         public ImmutableQueue<T> Enqueue(T value)
         {
-            Contract.Ensures(!Contract.Result<ImmutableQueue<T>>().IsEmpty);
-
             if (this.IsEmpty)
             {
                 return new ImmutableQueue<T>(ImmutableStack<T>.Empty.Push(value), ImmutableStack<T>.Empty);
@@ -171,7 +162,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The new queue.
         /// </returns>
-        [Pure]
+        
         IImmutableQueue<T> IImmutableQueue<T>.Enqueue(T value)
         {
             return this.Enqueue(value);
@@ -182,7 +173,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         public ImmutableQueue<T> Dequeue()
         {
             if (this.IsEmpty)
@@ -212,7 +203,7 @@ namespace System.Collections.Immutable
         /// <returns>The new queue with the head element removed.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "0#")]
-        [Pure]
+        
         public ImmutableQueue<T> Dequeue(out T value)
         {
             value = this.Peek();
@@ -224,7 +215,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
-        [Pure]
+        
         IImmutableQueue<T> IImmutableQueue<T>.Dequeue()
         {
             return this.Dequeue();
@@ -236,10 +227,14 @@ namespace System.Collections.Immutable
         /// <returns>
         /// An <see cref="T:Enumerator"/> that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
+        }
+
+        public override string ToString() {
+            return "Queue(" + this.Join(", ") + ")";
         }
 
         /// <summary>
@@ -248,7 +243,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return new EnumeratorObject(this);
@@ -260,7 +255,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        [Pure]
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return new EnumeratorObject(this);

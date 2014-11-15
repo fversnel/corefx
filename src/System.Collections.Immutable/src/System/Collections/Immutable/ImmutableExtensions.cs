@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Validation;
 
@@ -250,7 +250,6 @@ namespace System.Collections.Immutable
         internal static IOrderedCollection<T> AsOrderedCollection<T>(this IEnumerable<T> sequence)
         {
             Requires.NotNull(sequence, "sequence");
-            Contract.Ensures(Contract.Result<IOrderedCollection<T>>() != null);
 
             var orderedCollection = sequence as IOrderedCollection<T>;
             if (orderedCollection != null)

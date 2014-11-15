@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace System.Collections.Generic
 {
@@ -14,7 +13,7 @@ namespace System.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of element hashed in the collection.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-    internal interface IHashKeyCollection<in TKey>
+    internal interface IHashKeyCollection<TKey>
     {
         /// <summary>
         /// Gets the comparer used to obtain hash codes for the keys and check equality.

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Validation;
 
@@ -78,8 +78,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableSortedSet<T> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>().IsEmpty);
             return this.root.IsEmpty ? this : Empty.WithComparer(this.comparer);
         }
 
@@ -161,7 +159,7 @@ namespace System.Collections.Immutable
         /// This is an O(1) operation and results in only a single (small) memory allocation.
         /// The mutable collection that is returned is *not* thread-safe.
         /// </remarks>
-        [Pure]
+        
         public Builder ToBuilder()
         {
             // We must not cache the instance created here and return it to various callers.
@@ -173,11 +171,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> Add(T value)
         {
             Requires.NotNullAllowStructs(value, "value");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
             bool mutated;
             return this.Wrap(this.root.Add(value, this.comparer, out mutated));
         }
@@ -185,11 +182,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> Remove(T value)
         {
             Requires.NotNullAllowStructs(value, "value");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
             bool mutated;
             return this.Wrap(this.root.Remove(value, this.comparer, out mutated));
         }
@@ -206,7 +202,7 @@ namespace System.Collections.Immutable
         /// a value that has more complete data than the value you currently have, although their
         /// comparer functions indicate they are equal.
         /// </remarks>
-        [Pure]
+        
         public bool TryGetValue(T equalValue, out T actualValue)
         {
             Requires.NotNullAllowStructs(equalValue, "equalValue");
@@ -227,11 +223,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> Intersect(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
             var newSet = this.Clear();
             foreach (var item in other)
             {
@@ -247,7 +242,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> Except(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -267,7 +262,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The other sequence of items.</param>
         /// <returns>The new set.</returns>
-        [Pure]
+        
         public ImmutableSortedSet<T> SymmetricExcept(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -297,11 +292,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> Union(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
 
             ImmutableSortedSet<T> immutableSortedSet;
             if (TryCastToImmutableSortedSet(other, out immutableSortedSet) && immutableSortedSet.KeyComparer == this.KeyComparer) // argument is a compatible immutable sorted set
@@ -339,10 +333,9 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedSet<T> WithComparer(IComparer<T> comparer)
         {
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
             if (comparer == null)
             {
                 comparer = Comparer<T>.Default;
@@ -365,7 +358,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The sequence of items to check against this set.</param>
         /// <returns>A value indicating whether the sets are equal.</returns>
-        [Pure]
+        
         public bool SetEquals(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -395,7 +388,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a correct subset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -446,7 +439,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a correct superset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -474,7 +467,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a subset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsSubsetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -510,7 +503,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a superset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsSupersetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -531,7 +524,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set and other share at least one common element; otherwise, false.</returns>
-        [Pure]
+        
         public bool Overlaps(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -560,7 +553,7 @@ namespace System.Collections.Immutable
         /// An enumerator that iterates over the System.Collections.Generic.SortedSet&lt;T&gt;
         /// in reverse order.
         /// </returns>
-        [Pure]
+        
         public IEnumerable<T> Reverse()
         {
             return new ReverseEnumerable(this.root);
@@ -584,6 +577,11 @@ namespace System.Collections.Immutable
         {
             Requires.NotNullAllowStructs(item, "item");
             return this.root.IndexOf(item, this.comparer);
+        }
+
+        public override string ToString()
+        {
+            return "SortedSet(" + this.Join(", ") + ")";
         }
 
         #endregion
@@ -1018,7 +1016,7 @@ namespace System.Collections.Immutable
         /// <param name="root">The root of the collection.</param>
         /// <param name="comparer">The comparer used to build the tree.</param>
         /// <returns>The immutable sorted set instance.</returns>
-        [Pure]
+        
         private static ImmutableSortedSet<T> Wrap(Node root, IComparer<T> comparer)
         {
             return root.IsEmpty
@@ -1037,11 +1035,10 @@ namespace System.Collections.Immutable
         /// It's performance is optimal for additions that do not significantly dwarf the existing
         /// size of this collection.
         /// </remarks>
-        [Pure]
+        
         private ImmutableSortedSet<T> UnionIncremental(IEnumerable<T> items)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
 
             // Let's not implement in terms of ImmutableSortedSet.Add so that we're
             // not unnecessarily generating a new wrapping set object for each item.
@@ -1060,7 +1057,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="root">The root node to wrap.</param>
         /// <returns>A wrapping collection type for the new tree.</returns>
-        [Pure]
+        
         private ImmutableSortedSet<T> Wrap(Node root)
         {
             if (root != this.root)
@@ -1078,11 +1075,10 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="addedItems">The sequence of elements to add to this set.</param>
         /// <returns>The immutable sorted set.</returns>
-        [Pure]
+        
         private ImmutableSortedSet<T> LeafToRootRefill(IEnumerable<T> addedItems)
         {
             Requires.NotNull(addedItems, "addedItems");
-            Contract.Ensures(Contract.Result<ImmutableSortedSet<T>>() != null);
 
             // Rather than build up the immutable structure in the incremental way,
             // build it in such a way as to generate minimal garbage, by assembling
@@ -1289,9 +1285,6 @@ namespace System.Collections.Immutable
             /// </summary>
             private void ThrowIfDisposed()
             {
-                Contract.Ensures(this.root != null);
-                Contract.EnsuresOnThrow<ObjectDisposedException>(this.root == null);
-
                 if (this.root == null)
                 {
                     throw new ObjectDisposedException(this.GetType().FullName);
@@ -1438,7 +1431,6 @@ namespace System.Collections.Immutable
             /// </summary>
             private Node()
             {
-                Contract.Ensures(this.IsEmpty);
                 this.frozen = true; // the empty node is *always* frozen.
             }
 
@@ -1651,11 +1643,10 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="collection">The collection.</param>
             /// <returns>The root of the node tree.</returns>
-            [Pure]
+            
             internal static Node NodeTreeFromSortedSet(SortedSet<T> collection)
             {
                 Requires.NotNull(collection, "collection");
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (collection.Count == 0)
                 {
@@ -1834,7 +1825,7 @@ namespace System.Collections.Immutable
             /// <returns>
             ///   <c>true</c> if the tree contains the specified key; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             internal bool Contains(T key, IComparer<T> comparer)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1862,7 +1853,7 @@ namespace System.Collections.Immutable
             /// <param name="key">The key to search for.</param>
             /// <param name="comparer">The comparer.</param>
             /// <returns>The matching node, or the Empty node if no match was found.</returns>
-            [Pure]
+            
             internal Node Search(T key, IComparer<T> comparer)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1896,7 +1887,7 @@ namespace System.Collections.Immutable
             /// <param name="key">The key to search for.</param>
             /// <param name="comparer">The comparer.</param>
             /// <returns>The matching node, or the Empty node if no match was found.</returns>
-            [Pure]
+            
             internal int IndexOf(T key, IComparer<T> comparer)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1945,7 +1936,7 @@ namespace System.Collections.Immutable
             /// An enumerator that iterates over the System.Collections.Generic.SortedSet&lt;T&gt;
             /// in reverse order.
             /// </returns>
-            [Pure]
+            
             internal IEnumerator<T> Reverse()
             {
                 return new Enumerator(this, reverse: true);
@@ -1962,7 +1953,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -1982,7 +1972,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -2002,7 +1991,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -2022,7 +2010,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -2038,7 +2025,7 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>0 if the tree is in balance, a positive integer if the right side is heavy, or a negative integer if the left side is heavy.</returns>
-            [Pure]
+            
             private static int Balance(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -2054,7 +2041,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// <c>true</c> if [is right heavy] [the specified tree]; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             private static bool IsRightHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -2065,7 +2052,7 @@ namespace System.Collections.Immutable
             /// <summary>
             /// Determines whether the specified tree is left heavy.
             /// </summary>
-            [Pure]
+            
             private static bool IsLeftHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -2078,12 +2065,11 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>A balanced tree.</returns>
-            [Pure]
+            
             private static Node MakeBalanced(Node tree)
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (IsRightHeavy(tree))
                 {
@@ -2107,7 +2093,7 @@ namespace System.Collections.Immutable
             /// <param name="start">The starting index within <paramref name="items"/> that should be captured by the node tree.</param>
             /// <param name="length">The number of elements from <paramref name="items"/> that should be captured by the node tree.</param>
             /// <returns>The root of the created node tree.</returns>
-            [Pure]
+            
             private static Node NodeTreeFromList(IOrderedCollection<T> items, int start, int length)
             {
                 Requires.NotNull(items, "items");

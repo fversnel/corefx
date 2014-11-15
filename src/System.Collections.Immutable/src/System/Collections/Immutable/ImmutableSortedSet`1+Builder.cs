@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Validation;
 
@@ -419,7 +419,7 @@ namespace System.Collections.Immutable
             /// An enumerator that iterates over the System.Collections.Generic.SortedSet&lt;T&gt;
             /// in reverse order.
             /// </returns>
-            [Pure]
+            
             public IEnumerable<T> Reverse()
             {
                 return new ReverseEnumerable(this.root);

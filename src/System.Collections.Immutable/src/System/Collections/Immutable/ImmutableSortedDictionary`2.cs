@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Threading;
 using Validation;
@@ -88,9 +88,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableSortedDictionary<TKey, TValue> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>().IsEmpty);
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>().KeyComparer == ((ISortKeyCollection<TKey>)this).KeyComparer);
             return this.root.IsEmpty ? this : Empty.WithComparers(this.keyComparer, this.valueComparer);
         }
 
@@ -230,7 +227,7 @@ namespace System.Collections.Immutable
         /// This is an O(1) operation and results in only a single (small) memory allocation.
         /// The mutable collection that is returned is *not* thread-safe.
         /// </remarks>
-        [Pure]
+        
         public Builder ToBuilder()
         {
             // We must not cache the instance created here and return it to various callers.
@@ -242,11 +239,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> Add(TKey key, TValue value)
         {
             Requires.NotNullAllowStructs(key, "key");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
             bool mutated;
             var result = this.root.Add(key, value, this.keyComparer, this.valueComparer, out mutated);
             return this.Wrap(result, this.count + 1);
@@ -255,12 +251,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> SetItem(TKey key, TValue value)
         {
             Requires.NotNullAllowStructs(key, "key");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
-            Contract.Ensures(!Contract.Result<ImmutableSortedDictionary<TKey, TValue>>().IsEmpty);
             bool replacedExistingValue, mutated;
             var result = this.root.SetItem(key, value, this.keyComparer, this.valueComparer, out replacedExistingValue, out mutated);
             return this.Wrap(result, replacedExistingValue ? this.count : this.count + 1);
@@ -272,11 +266,10 @@ namespace System.Collections.Immutable
         /// <param name="items">The key=value pairs to set on the map.  Any keys that conflict with existing keys will overwrite the previous values.</param>
         /// <returns>An immutable dictionary.</returns>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableDictionary<TKey, TValue>>() != null);
 
             return this.AddRange(items, overwriteOnCollision: true, avoidToSortedMap: false);
         }
@@ -285,11 +278,10 @@ namespace System.Collections.Immutable
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
 
             return this.AddRange(items, overwriteOnCollision: false, avoidToSortedMap: false);
         }
@@ -297,11 +289,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> Remove(TKey value)
         {
             Requires.NotNullAllowStructs(value, "value");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
             bool mutated;
             var result = this.root.Remove(value, this.keyComparer, out mutated);
             return this.Wrap(result, this.count - 1);
@@ -310,11 +301,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> RemoveRange(IEnumerable<TKey> keys)
         {
             Requires.NotNull(keys, "keys");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
 
             var result = this.root;
             int count = this.count;
@@ -335,11 +325,9 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> WithComparers(IComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>().IsEmpty == this.IsEmpty);
             if (keyComparer == null)
             {
                 keyComparer = Comparer<TKey>.Default;
@@ -376,7 +364,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableDictionary&lt;TKey, TValue&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableSortedDictionary<TKey, TValue> WithComparers(IComparer<TKey> keyComparer)
         {
             return this.WithComparers(keyComparer, this.valueComparer);
@@ -394,10 +382,16 @@ namespace System.Collections.Immutable
         /// true if the ImmutableSortedMap&lt;TKey,TValue&gt; contains
         /// an element with the specified value; otherwise, false.
         /// </returns>
-        [Pure]
+        
         public bool ContainsValue(TValue value)
         {
             return this.root.ContainsValue(value, this.valueComparer);
+        }
+
+        public override string ToString()
+        {
+            var elems = this.Select(pair => pair.Key + ": " + pair.Value);
+            return "SortedDict(" + elems.Join(", ") + ")";
         }
 
         #endregion
@@ -771,7 +765,7 @@ namespace System.Collections.Immutable
         /// <param name="keyComparer">The key comparer to use for the map.</param>
         /// <param name="valueComparer">The value comparer to use for the map.</param>
         /// <returns>The immutable sorted set instance.</returns>
-        [Pure]
+        
         private static ImmutableSortedDictionary<TKey, TValue> Wrap(Node root, int count, IComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
         {
             return root.IsEmpty
@@ -810,11 +804,10 @@ namespace System.Collections.Immutable
         /// <param name="items">The entries to add.</param>
         /// <param name="overwriteOnCollision"><c>true</c> to allow the <paramref name="items"/> sequence to include duplicate keys and let the last one win; <c>false</c> to throw on collisions.</param>
         /// <param name="avoidToSortedMap"><c>true</c> when being called from ToHashMap to avoid StackOverflow.</param>
-        [Pure]
+        
         private ImmutableSortedDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> items, bool overwriteOnCollision, bool avoidToSortedMap)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableSortedDictionary<TKey, TValue>>() != null);
 
             // Some optimizations may apply if we're an empty set.
             if (this.IsEmpty && !avoidToSortedMap)
@@ -852,7 +845,7 @@ namespace System.Collections.Immutable
         /// <param name="root">The root node to wrap.</param>
         /// <param name="adjustedCountIfDifferentRoot">The number of elements in the new tree, assuming it's different from the current tree.</param>
         /// <returns>A wrapping collection type for the new tree.</returns>
-        [Pure]
+        
         private ImmutableSortedDictionary<TKey, TValue> Wrap(Node root, int adjustedCountIfDifferentRoot)
         {
             if (this.root != root)
@@ -868,7 +861,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// Efficiently creates a new collection based on the contents of some sequence.
         /// </summary>
-        [Pure]
+        
         private ImmutableSortedDictionary<TKey, TValue> FillFromEmpty(IEnumerable<KeyValuePair<TKey, TValue>> items, bool overwriteOnCollision)
         {
             Debug.Assert(this.IsEmpty);
@@ -1108,9 +1101,6 @@ namespace System.Collections.Immutable
             /// </summary>
             internal void ThrowIfDisposed()
             {
-                Contract.Ensures(this.root != null);
-                Contract.EnsuresOnThrow<ObjectDisposedException>(this.root == null);
-
                 if (this.root == null)
                 {
                     throw new ObjectDisposedException(this.GetType().FullName);
@@ -1212,7 +1202,6 @@ namespace System.Collections.Immutable
             /// </summary>
             private Node()
             {
-                Contract.Ensures(this.IsEmpty);
                 this.frozen = true; // the empty node is *always* frozen.
             }
 
@@ -1231,10 +1220,6 @@ namespace System.Collections.Immutable
                 Requires.NotNull(left, "left");
                 Requires.NotNull(right, "right");
                 Debug.Assert(!frozen || (left.frozen && right.frozen));
-                Contract.Ensures(!this.IsEmpty);
-                Contract.Ensures(this.key != null);
-                Contract.Ensures(this.left == left);
-                Contract.Ensures(this.right == right);
 
                 this.key = key;
                 this.value = value;
@@ -1254,7 +1239,6 @@ namespace System.Collections.Immutable
             {
                 get
                 {
-                    Contract.Ensures((this.left != null && this.right != null) || Contract.Result<bool>());
                     return this.left == null;
                 }
             }
@@ -1406,11 +1390,10 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="dictionary">The collection.</param>
             /// <returns>The root of the node tree.</returns>
-            [Pure]
+            
             internal static Node NodeTreeFromSortedDictionary(SortedDictionary<TKey, TValue> dictionary)
             {
                 Requires.NotNull(dictionary, "dictionary");
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 var list = dictionary.AsOrderedCollection();
                 return NodeTreeFromList(list, 0, list.Count);
@@ -1473,7 +1456,7 @@ namespace System.Collections.Immutable
             /// <param name="key">The key.</param>
             /// <param name="keyComparer">The key comparer.</param>
             /// <returns>The value.</returns>
-            [Pure]
+            
             internal TValue GetValueOrDefault(TKey key, IComparer<TKey> keyComparer)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1490,7 +1473,7 @@ namespace System.Collections.Immutable
             /// <param name="keyComparer">The key comparer.</param>
             /// <param name="value">The value.</param>
             /// <returns>True if the key was found.</returns>
-            [Pure]
+            
             internal bool TryGetValue(TKey key, IComparer<TKey> keyComparer, out TValue value)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1522,7 +1505,7 @@ namespace System.Collections.Immutable
             /// the canonical value, or a value that has more complete data than the value you currently have,
             /// although their comparer functions indicate they are equal.
             /// </remarks>
-            [Pure]
+            
             internal bool TryGetKey(TKey equalKey, IComparer<TKey> keyComparer, out TKey actualKey)
             {
                 Requires.NotNullAllowStructs(equalKey, "equalKey");
@@ -1549,7 +1532,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             internal bool ContainsKey(TKey key, IComparer<TKey> keyComparer)
             {
                 Requires.NotNullAllowStructs(key, "key");
@@ -1570,7 +1553,7 @@ namespace System.Collections.Immutable
             /// true if the ImmutableSortedMap&lt;TKey,TValue&gt; contains
             /// an element with the specified value; otherwise, false.
             /// </returns>
-            [Pure]
+            
             internal bool ContainsValue(TValue value, IEqualityComparer<TValue> valueComparer)
             {
                 Requires.NotNull(valueComparer, "valueComparer");
@@ -1586,7 +1569,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// <c>true</c> if [contains] [the specified pair]; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             internal bool Contains(KeyValuePair<TKey, TValue> pair, IComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
             {
                 Requires.NotNullAllowStructs(pair.Key != null, "key");
@@ -1632,7 +1615,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -1652,7 +1634,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -1672,7 +1653,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.right.IsEmpty)
                 {
@@ -1692,7 +1672,6 @@ namespace System.Collections.Immutable
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (tree.left.IsEmpty)
                 {
@@ -1708,7 +1687,7 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>0 if the tree is in balance, a positive integer if the right side is heavy, or a negative integer if the left side is heavy.</returns>
-            [Pure]
+            
             private static int Balance(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -1724,7 +1703,7 @@ namespace System.Collections.Immutable
             /// <returns>
             /// <c>true</c> if [is right heavy] [the specified tree]; otherwise, <c>false</c>.
             /// </returns>
-            [Pure]
+            
             private static bool IsRightHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -1735,7 +1714,7 @@ namespace System.Collections.Immutable
             /// <summary>
             /// Determines whether the specified tree is left heavy.
             /// </summary>
-            [Pure]
+            
             private static bool IsLeftHeavy(Node tree)
             {
                 Requires.NotNull(tree, "tree");
@@ -1748,12 +1727,11 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="tree">The tree.</param>
             /// <returns>A balanced tree.</returns>
-            [Pure]
+            
             private static Node MakeBalanced(Node tree)
             {
                 Requires.NotNull(tree, "tree");
                 Debug.Assert(!tree.IsEmpty);
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (IsRightHeavy(tree))
                 {
@@ -1777,13 +1755,12 @@ namespace System.Collections.Immutable
             /// <param name="start">The starting index within <paramref name="items"/> that should be captured by the node tree.</param>
             /// <param name="length">The number of elements from <paramref name="items"/> that should be captured by the node tree.</param>
             /// <returns>The root of the created node tree.</returns>
-            [Pure]
+            
             private static Node NodeTreeFromList(IOrderedCollection<KeyValuePair<TKey, TValue>> items, int start, int length)
             {
                 Requires.NotNull(items, "items");
                 Requires.Range(start >= 0, "start");
                 Requires.Range(length >= 0, "length");
-                Contract.Ensures(Contract.Result<Node>() != null);
 
                 if (length == 0)
                 {
@@ -1973,7 +1950,7 @@ namespace System.Collections.Immutable
             /// </summary>
             /// <param name="key">The key.</param>
             /// <param name="keyComparer">The key comparer.</param>
-            [Pure]
+            
             private Node Search(TKey key, IComparer<TKey> keyComparer)
             {
                 // Arg validation is too expensive for recursive methods.

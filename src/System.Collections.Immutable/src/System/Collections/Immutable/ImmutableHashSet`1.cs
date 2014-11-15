@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using Validation;
 
@@ -77,8 +77,6 @@ namespace System.Collections.Immutable
         /// </summary>
         public ImmutableHashSet<T> Clear()
         {
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>().IsEmpty);
             return this.IsEmpty ? this : ImmutableHashSet<T>.Empty.WithComparer(this.equalityComparer);
         }
 
@@ -168,7 +166,7 @@ namespace System.Collections.Immutable
         /// This is an O(1) operation and results in only a single (small) memory allocation.
         /// The mutable collection that is returned is *not* thread-safe.
         /// </remarks>
-        [Pure]
+        
         public Builder ToBuilder()
         {
             // We must not cache the instance created here and return it to various callers.
@@ -180,11 +178,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableHashSet<T> Add(T item)
         {
             Requires.NotNullAllowStructs(item, "item");
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
 
             var result = Add(item, this.Origin);
             return result.Finalize(this);
@@ -196,7 +193,6 @@ namespace System.Collections.Immutable
         public ImmutableHashSet<T> Remove(T item)
         {
             Requires.NotNullAllowStructs(item, "item");
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
 
             var result = Remove(item, this.Origin);
             return result.Finalize(this);
@@ -214,7 +210,7 @@ namespace System.Collections.Immutable
         /// a value that has more complete data than the value you currently have, although their
         /// comparer functions indicate they are equal.
         /// </remarks>
-        [Pure]
+        
         public bool TryGetValue(T equalValue, out T actualValue)
         {
             Requires.NotNullAllowStructs(equalValue, "value");
@@ -233,11 +229,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableHashSet<T> Union(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
 
             return this.Union(other, avoidWithComparer: false);
         }
@@ -245,11 +240,10 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableHashSet<T> Intersect(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
 
             var result = Intersect(other, this.Origin);
             return result.Finalize(this);
@@ -271,11 +265,10 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The other sequence of items.</param>
         /// <returns>The new set.</returns>
-        [Pure]
+        
         public ImmutableHashSet<T> SymmetricExcept(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
-            Contract.Ensures(Contract.Result<IImmutableSet<T>>() != null);
 
             var result = SymmetricExcept(other, this.Origin);
             return result.Finalize(this);
@@ -286,7 +279,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The sequence of items to check against this set.</param>
         /// <returns>A value indicating whether the sets are equal.</returns>
-        [Pure]
+        
         public bool SetEquals(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -299,7 +292,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a correct subset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -312,7 +305,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a correct superset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -325,7 +318,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a subset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsSubsetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -338,7 +331,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set is a superset of other; otherwise, false.</returns>
-        [Pure]
+        
         public bool IsSupersetOf(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -351,7 +344,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="other">The collection to compare to the current set.</param>
         /// <returns>true if the current set and other share at least one common element; otherwise, false.</returns>
-        [Pure]
+        
         public bool Overlaps(IEnumerable<T> other)
         {
             Requires.NotNull(other, "other");
@@ -431,10 +424,9 @@ namespace System.Collections.Immutable
         /// <summary>
         /// See the <see cref="IImmutableSet&lt;T&gt;"/> interface.
         /// </summary>
-        [Pure]
+        
         public ImmutableHashSet<T> WithComparer(IEqualityComparer<T> equalityComparer)
         {
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
             if (equalityComparer == null)
             {
                 equalityComparer = EqualityComparer<T>.Default;
@@ -450,6 +442,11 @@ namespace System.Collections.Immutable
                 result = result.Union(this, avoidWithComparer: true);
                 return result;
             }
+        }
+
+        public override string ToString() {
+            var formattedElements = this.Aggregate("", (s, value) => s + ", " + value.ToString());
+            return "Set(" + this.Join(", ") + ")";
         }
 
         #endregion
@@ -843,7 +840,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// Performs the set operation on a given data structure.
         /// </summary>
-        [Pure]
+        
         private static MutationResult SymmetricExcept(IEnumerable<T> other, MutationInput origin)
         {
             Requires.NotNull(other, "other");
@@ -1014,11 +1011,10 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="items">The entries to add.</param>
         /// <param name="avoidWithComparer"><c>true</c> when being called from ToHashSet to avoid StackOverflow.</param>
-        [Pure]
+        
         private ImmutableHashSet<T> Union(IEnumerable<T> items, bool avoidWithComparer)
         {
             Requires.NotNull(items, "items");
-            Contract.Ensures(Contract.Result<ImmutableHashSet<T>>() != null);
 
             // Some optimizations may apply if we're an empty set.
             if (this.IsEmpty && !avoidWithComparer)

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace System.Collections.Generic
 {
@@ -15,7 +15,7 @@ namespace System.Collections.Generic
     /// </summary>
     /// <typeparam name="TKey">The type of element sorted in the collection.</typeparam>
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-    internal interface ISortKeyCollection<in TKey>
+    internal interface ISortKeyCollection<TKey>
     {
         /// <summary>
         /// Gets the comparer used to sort keys.

@@ -4,10 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 using Validation;
 
 namespace System.Collections.Immutable
@@ -23,7 +23,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <returns>The immutable collection.</returns>
-        [Pure]
+        
         public static ImmutableQueue<T> Create<T>()
         {
             return ImmutableQueue<T>.Empty;
@@ -35,7 +35,7 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="item">The item to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
+        
         public static ImmutableQueue<T> Create<T>(T item)
         {
             return ImmutableQueue<T>.Empty.Enqueue(item);
@@ -47,7 +47,7 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
+        
         public static ImmutableQueue<T> CreateRange<T>(IEnumerable<T> items)
         {
             Requires.NotNull(items, "items");
@@ -67,7 +67,7 @@ namespace System.Collections.Immutable
         /// <typeparam name="T">The type of items stored by the collection.</typeparam>
         /// <param name="items">The items to prepopulate.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
+        
         public static ImmutableQueue<T> Create<T>(params T[] items)
         {
             Requires.NotNull(items, "items");
@@ -90,7 +90,7 @@ namespace System.Collections.Immutable
         /// <returns>The new queue with the head element removed.</returns>
         /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "1#")]
-        [Pure]
+        
         public static IImmutableQueue<T> Dequeue<T>(this IImmutableQueue<T> queue, out T value)
         {
             Requires.NotNull(queue, "queue");

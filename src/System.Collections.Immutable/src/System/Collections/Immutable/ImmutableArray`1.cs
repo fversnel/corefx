@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Validation;
 
+using Validation;
+/*
 namespace System.Collections.Immutable
 {
     /// <summary>
@@ -253,7 +253,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int IndexOf(T item)
         {
             return this.IndexOf(item, 0, this.Length, EqualityComparer<T>.Default);
@@ -266,7 +266,7 @@ namespace System.Collections.Immutable
         /// <param name="startIndex">The index at which to begin the search.</param>
         /// <param name="equalityComparer">The equality comparer to use in the search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int IndexOf(T item, int startIndex, IEqualityComparer<T> equalityComparer)
         {
             return this.IndexOf(item, startIndex, this.Length - startIndex, equalityComparer);
@@ -278,7 +278,7 @@ namespace System.Collections.Immutable
         /// <param name="item">The item to search for.</param>
         /// <param name="startIndex">The index at which to begin the search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int IndexOf(T item, int startIndex)
         {
             return this.IndexOf(item, startIndex, this.Length - startIndex, EqualityComparer<T>.Default);
@@ -291,7 +291,7 @@ namespace System.Collections.Immutable
         /// <param name="startIndex">The index at which to begin the search.</param>
         /// <param name="count">The number of elements to search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int IndexOf(T item, int startIndex, int count)
         {
             return this.IndexOf(item, startIndex, count, EqualityComparer<T>.Default);
@@ -305,7 +305,7 @@ namespace System.Collections.Immutable
         /// <param name="count">The number of elements to search.</param>
         /// <param name="equalityComparer">The equality comparer to use in the search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int IndexOf(T item, int startIndex, int count, IEqualityComparer<T> equalityComparer)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -342,7 +342,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int LastIndexOf(T item)
         {
             if (this.Length == 0)
@@ -359,7 +359,7 @@ namespace System.Collections.Immutable
         /// <param name="item">The item to search for.</param>
         /// <param name="startIndex">The index at which to begin the search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int LastIndexOf(T item, int startIndex)
         {
             if (this.Length == 0 && startIndex == 0)
@@ -377,7 +377,7 @@ namespace System.Collections.Immutable
         /// <param name="startIndex">The index at which to begin the search.</param>
         /// <param name="count">The number of elements to search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int LastIndexOf(T item, int startIndex, int count)
         {
             return this.LastIndexOf(item, startIndex, count, EqualityComparer<T>.Default);
@@ -391,7 +391,7 @@ namespace System.Collections.Immutable
         /// <param name="count">The number of elements to search.</param>
         /// <param name="equalityComparer">The equality comparer to use in the search.</param>
         /// <returns>The 0-based index into the array where the item was found; or -1 if it could not be found.</returns>
-        [Pure]
+        
         public int LastIndexOf(T item, int startIndex, int count, IEqualityComparer<T> equalityComparer)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -428,7 +428,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns><c>true</c> if an equal value was found in the array; <c>false</c> otherwise.</returns>
-        [Pure]
+        
         public bool Contains(T item)
         {
             return this.IndexOf(item) >= 0;
@@ -438,7 +438,7 @@ namespace System.Collections.Immutable
         /// Copies the contents of this array to the specified array.
         /// </summary>
         /// <param name="destination">The array to copy to.</param>
-        [Pure]
+        
         public void CopyTo(T[] destination)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -450,7 +450,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="destination">The array to copy to.</param>
         /// <param name="destinationIndex">The index into the destination array to which the first copied element is written.</param>
-        [Pure]
+        
         public void CopyTo(T[] destination, int destinationIndex)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -464,7 +464,7 @@ namespace System.Collections.Immutable
         /// <param name="destination">The array to copy to.</param>
         /// <param name="destinationIndex">The index into the destination array to which the first copied element is written.</param>
         /// <param name="length">The number of elements to copy.</param>
-        [Pure]
+        
         public void CopyTo(int sourceIndex, T[] destination, int destinationIndex, int length)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -477,7 +477,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The 0-based index into the array at which the new item should be added.</param>
         /// <param name="item">The item to insert at the start of the array.</param>
         /// <returns>A new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> Insert(int index, T item)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -501,7 +501,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The index at which to insert the value.</param>
         /// <param name="items">The elements to insert.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
+        
         public ImmutableArray<T> InsertRange(int index, IEnumerable<T> items)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -537,7 +537,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The index at which to insert the value.</param>
         /// <param name="items">The elements to insert.</param>
         /// <returns>The new immutable collection.</returns>
-        [Pure]
+        
         public ImmutableArray<T> InsertRange(int index, ImmutableArray<T> items)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -561,7 +561,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="item">The item to insert at the end of the array.</param>
         /// <returns>A new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> Add(T item)
         {
             if (this.Length == 0)
@@ -577,7 +577,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="items">The values to add.</param>
         /// <returns>A new list with the elements added.</returns>
-        [Pure]
+        
         public ImmutableArray<T> AddRange(IEnumerable<T> items)
         {
             return this.InsertRange(this.Length, items);
@@ -588,7 +588,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="items">The values to add.</param>
         /// <returns>A new list with the elements added.</returns>
-        [Pure]
+        
         public ImmutableArray<T> AddRange(ImmutableArray<T> items)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -612,7 +612,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The index of the item to replace.</param>
         /// <param name="item">The new item.</param>
         /// <returns>The new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> SetItem(int index, T item)
         {
             Requires.Range(index >= 0 && index < this.Length, "index");
@@ -630,7 +630,7 @@ namespace System.Collections.Immutable
         /// <param name="newValue">The element to replace the old element with.</param>
         /// <returns>The new list -- even if the value being replaced is equal to the new value for that position.</returns>
         /// <exception cref="ArgumentException">Thrown when the old value does not exist in the list.</exception>
-        [Pure]
+        
         public ImmutableArray<T> Replace(T oldValue, T newValue)
         {
             return this.Replace(oldValue, newValue, EqualityComparer<T>.Default);
@@ -646,7 +646,7 @@ namespace System.Collections.Immutable
         /// </param>
         /// <returns>The new list -- even if the value being replaced is equal to the new value for that position.</returns>
         /// <exception cref="ArgumentException">Thrown when the old value does not exist in the list.</exception>
-        [Pure]
+        
         public ImmutableArray<T> Replace(T oldValue, T newValue, IEqualityComparer<T> equalityComparer)
         {
             int index = this.IndexOf(oldValue, equalityComparer);
@@ -664,7 +664,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="item">The item to remove.</param>
         /// <returns>The new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> Remove(T item)
         {
             return this.Remove(item, EqualityComparer<T>.Default);
@@ -679,7 +679,7 @@ namespace System.Collections.Immutable
         /// The equality comparer to use in the search.
         /// </param>
         /// <returns>The new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> Remove(T item, IEqualityComparer<T> equalityComparer)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -694,7 +694,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <param name="index">The 0-based index into the array for the element to omit from the returned array.</param>
         /// <returns>The new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveAt(int index)
         {
             return this.RemoveRange(index, 1);
@@ -706,7 +706,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The 0-based index into the array for the element to omit from the returned array.</param>
         /// <param name="length">The number of elements to remove.</param>
         /// <returns>The new array.</returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveRange(int index, int length)
         {
             Requires.Range(index >= 0 && index < this.Length, "index");
@@ -725,7 +725,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveRange(IEnumerable<T> items)
         {
             return this.RemoveRange(items, EqualityComparer<T>.Default);
@@ -741,7 +741,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -769,7 +769,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveRange(ImmutableArray<T> items)
         {
             return this.RemoveRange(items.array);
@@ -785,7 +785,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A new list with the elements removed.
         /// </returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveRange(ImmutableArray<T> items, IEqualityComparer<T> equalityComparer)
         {
             return this.RemoveRange(items.array, equalityComparer);
@@ -802,7 +802,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// The new list.
         /// </returns>
-        [Pure]
+        
         public ImmutableArray<T> RemoveAll(Predicate<T> match)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -828,7 +828,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// Returns an empty array.
         /// </summary>
-        [Pure]
+        
         public ImmutableArray<T> Clear()
         {
             return Empty;
@@ -837,7 +837,7 @@ namespace System.Collections.Immutable
         /// <summary>
         /// Returns a sorted instance of this array.
         /// </summary>
-        [Pure]
+        
         public ImmutableArray<T> Sort()
         {
             return this.Sort(0, this.Length, Comparer<T>.Default);
@@ -847,7 +847,7 @@ namespace System.Collections.Immutable
         /// Returns a sorted instance of this array.
         /// </summary>
         /// <param name="comparer">The comparer to use in sorting. If <c>null</c>, the default comparer is used.</param>
-        [Pure]
+        
         public ImmutableArray<T> Sort(IComparer<T> comparer)
         {
             return this.Sort(0, this.Length, comparer);
@@ -859,7 +859,7 @@ namespace System.Collections.Immutable
         /// <param name="index">The index of the first element to consider in the sort.</param>
         /// <param name="count">The number of elements to include in the sort.</param>
         /// <param name="comparer">The comparer to use in sorting. If <c>null</c>, the default comparer is used.</param>
-        [Pure]
+        
         public ImmutableArray<T> Sort(int index, int count, IComparer<T> comparer)
         {
             this.ThrowNullRefIfNotInitialized();
@@ -897,7 +897,7 @@ namespace System.Collections.Immutable
         /// Returns a builder that is populated with the same contents as this array.
         /// </summary>
         /// <returns>The new builder.</returns>
-        [Pure]
+        
         public ImmutableArray<T>.Builder ToBuilder()
         {
             if (this.Length == 0)
@@ -914,7 +914,7 @@ namespace System.Collections.Immutable
         /// Returns an enumerator for the contents of the array.
         /// </summary>
         /// <returns>An enumerator.</returns>
-        [Pure]
+        
         public Enumerator GetEnumerator()
         {
             this.ThrowNullRefIfNotInitialized();
@@ -927,7 +927,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
         /// </returns>
-        [Pure]
+        
         public override int GetHashCode()
         {
             return this.array == null ? 0 : this.array.GetHashCode();
@@ -940,7 +940,7 @@ namespace System.Collections.Immutable
         /// <returns>
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        [Pure]
+        
         public override bool Equals(object obj)
         {
             if (obj is ImmutableArray<T>)
@@ -958,7 +958,7 @@ namespace System.Collections.Immutable
         /// <returns>
         /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
-        [Pure]
+        
         public bool Equals(ImmutableArray<T> other)
         {
             return this.array == other.array;
@@ -979,7 +979,7 @@ namespace System.Collections.Immutable
         /// element types to their derived types. However, downcasting is only successful
         /// when it reverses a prior upcasting operation.
         /// </remarks>
-        [Pure]
+        
         public ImmutableArray<TOther> As<TOther>() where TOther : class
         {
             return new ImmutableArray<TOther>(this.array as TOther[]);
@@ -993,7 +993,7 @@ namespace System.Collections.Immutable
         /// An System.Collections.Generic.IEnumerable&lt;T&gt; that contains elements from
         /// the input sequence of type TResult.
         /// </returns>
-        [Pure]
+        
         public IEnumerable<TResult> OfType<TResult>()
         {
             if (this.array == null || this.array.Length == 0)
@@ -1006,31 +1006,31 @@ namespace System.Collections.Immutable
 
         #region Explicit interface methods
 
-        [Pure]
+        
         void IList<T>.Insert(int index, T item)
         {
             throw new NotSupportedException();
         }
 
-        [Pure]
+        
         void IList<T>.RemoveAt(int index)
         {
             throw new NotSupportedException();
         }
 
-        [Pure]
+        
         void ICollection<T>.Add(T item)
         {
             throw new NotSupportedException();
         }
 
-        [Pure]
+        
         void ICollection<T>.Clear()
         {
             throw new NotSupportedException();
         }
 
-        [Pure]
+        
         bool ICollection<T>.Remove(T item)
         {
             throw new NotSupportedException();
@@ -1041,7 +1041,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>An enumerator.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the <see cref="IsDefault" /> property returns true.</exception>
-        [Pure]
+        
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             this.ThrowInvalidOperationIfNotInitialized();
@@ -1053,7 +1053,7 @@ namespace System.Collections.Immutable
         /// </summary>
         /// <returns>An enumerator.</returns>
         /// <exception cref="InvalidOperationException">Thrown if the <see cref="IsDefault" /> property returns true.</exception>
-        [Pure]
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             this.ThrowInvalidOperationIfNotInitialized();
@@ -1545,3 +1545,4 @@ namespace System.Collections.Immutable
         }
     }
 }
+*/

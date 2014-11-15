@@ -21,10 +21,10 @@ namespace System.Collections.Immutable
         /// <param name="location">The field or local variable to change.</param>
         /// <param name="value">The new value to assign.</param>
         /// <returns>The prior value at the specified <paramref name="location"/>.</returns>
-        public static ImmutableArray<T> InterlockedExchange<T>(ref ImmutableArray<T> location, ImmutableArray<T> value)
+        /*public static ImmutableArray<T> InterlockedExchange<T>(ref ImmutableArray<T> location, ImmutableArray<T> value)
         {
             return new ImmutableArray<T>(Interlocked.Exchange(ref location.array, value.array));
-        }
+        }*/
 
         /// <summary>
         /// Assigns a field or variable containing an immutable array to the specified value
@@ -35,10 +35,10 @@ namespace System.Collections.Immutable
         /// <param name="value">The new value to assign.</param>
         /// <param name="comparand">The value to check equality for before assigning.</param>
         /// <returns>The prior value at the specified <paramref name="location"/>.</returns>
-        public static ImmutableArray<T> InterlockedCompareExchange<T>(ref ImmutableArray<T> location, ImmutableArray<T> value, ImmutableArray<T> comparand)
+        /*public static ImmutableArray<T> InterlockedCompareExchange<T>(ref ImmutableArray<T> location, ImmutableArray<T> value, ImmutableArray<T> comparand)
         {
             return new ImmutableArray<T>(Interlocked.CompareExchange(ref location.array, value.array, comparand.array));
-        }
+        }*/
 
         /// <summary>
         /// Assigns a field or variable containing an immutable array to the specified value
@@ -48,10 +48,10 @@ namespace System.Collections.Immutable
         /// <param name="location">The field or local variable to change.</param>
         /// <param name="value">The new value to assign.</param>
         /// <returns>True if the field was assigned the specified value; <c>false</c> if it was previously initialized.</returns>
-        public static bool InterlockedInitialize<T>(ref ImmutableArray<T> location, ImmutableArray<T> value)
+        /*public static bool InterlockedInitialize<T>(ref ImmutableArray<T> location, ImmutableArray<T> value)
         {
             return InterlockedCompareExchange(ref location, value, default(ImmutableArray<T>)).IsDefault;
-        }
+        }*/
 
         #endregion
 
